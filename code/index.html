@@ -1,0 +1,370 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  	<meta charset="utf-8">
+  	<title>Peerster client</title>
+  	<style type="text/css">
+	* {margin: 0; padding: 0;}
+	#container {height: 100%; width:100%; font-size: 0;}
+	#left, #middle, #right {display: inline-block; *display: inline; zoom: 1; vertical-align: top; font-size: 12px;}
+	#left {width: 50%;}
+	#middle {width: 25%;}
+	#right {width: 25%;}
+	</style>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script>
+		var chats=[];
+		var privateChats = new Map();
+		var routable=[];
+		var searchresults=[];
+		setTimeout("location.reload(true);",15000);
+		//var auto_refresh = setInterval( function() { $('#routablenodes').fadeIn("slow"); }, 5000);
+		$(document).ready(function(){
+			var backend=window.location.pathname;
+			$('#routablenodes').on('submit','form',function(e){
+				id = $(this).attr("id");
+    			id = id.substring(6,id.length)
+    			var msg = $('input[name=message'+id+']');
+		        $.post(backend+"privatemessage",
+		        {
+		        	dest : id,
+		        	message : msg.val()
+		        },
+		        function(data, status){
+
+		        }
+		        )
+		        $('#routablenodes').trigger('update');
+		        e.PreventDefault();
+		        return false;
+    		});
+    		$('#routablenodes').on('update',function(e){
+				for(i=0;i<routable.length;i++){
+					id="chats"+routable[i];
+					elems=""
+	  				if(privateChats.has(routable[i])){
+	  					pchats = privateChats.get(routable[i])
+	      				for(j=0;j<pchats.length;j++){
+	      					elems+=pchats[j];
+	      				}
+	  				}
+	  				document.getElementById(id).innerHTML = elems;
+				}
+    		});
+
+			$('#send').submit(function(e) {
+		        var msg = $('input[name=message]');
+		        $.post(backend+"message",
+		        {
+		        	message : msg.val()
+		        },
+		        function(data, status){
+
+		        }
+		        )
+		        e.PreventDefault();
+		        return false;
+		    });
+		    $("#addpeer").submit(function(e){
+		        var ipport = $('input[name=ipport]');
+		        $.post(backend+"node",
+		        {
+		        	addr : ipport.val()
+		        },
+		        function(data, status){
+
+		        }
+		        )
+		        e.PreventDefault();
+		        return false;
+		    });
+		    $("#savename").submit(function(e){
+		        var name = $('input[name=newname]');
+		        $.post(backend+"id",
+		        {
+		        	newname : name.val()
+		        },
+		        function(data, status){
+
+		        }
+		        )
+		        e.PreventDefault();
+		        return false;
+		    });
+		    $("#sharefile").submit(function(e){
+		        var name = $('input[name=filename]');
+		        $.post(backend+"sharefile",
+		        {
+		        	filename : name.val().split('\\').pop()
+		        },
+		        function(data, status){
+		        	
+		        }
+		        )
+		        e.PreventDefault();
+		        return false;
+		    });
+		    $("#searchfiles").submit(function(e){
+		        var k = $('input[name=keywords]');
+		        $.ajax({
+				  type:    "POST",
+				  ContentType: 'application/json',
+				  cache:   false,
+				  url:     backend+"searchfiles",
+				  data:    {'keywords':k.val().replace(",","_")},
+				  success: function(data) {
+				  		data = data.substring(0, data.length - 1);
+				        handleSearchResults(data.split(","));
+				  },
+				  error:   function(jqXHR, textStatus, errorThrown) {
+				        /*alert("Error, status = " + textStatus + ", " +
+				              "error thrown: " + errorThrown
+				        );*/
+				  }
+				});
+		        e.PreventDefault();
+		        return false;
+		    });
+		    (function handleSearchResults(results){
+		    	
+		    });
+		    (function worker1() {
+			  $.ajax({
+			    url: backend+'latestmessages',
+			    data: {"from": 0}, 
+			    success: function(data) {
+			    	var msgs = JSON.parse(data);
+			    	if(msgs!=null){
+				      	for(i=0; i<msgs.length; i++){
+				      		elem = "<li>"+msgs[i]+"</li>";
+				      		if(chats.indexOf(elem)== -1){
+				      			chats.push(elem)
+				      			document.getElementById("chats").innerHTML += elem;
+				      		}
+				        }
+			    	}
+			    },
+			    complete: function() {
+			      setTimeout(worker1, 3000);
+			    }
+			  });
+			  return false;
+			})();
+			(function worker4() {
+				$.ajax({
+				    url: backend+'latestprivatemessages',
+				    data: {"from": 0}, 
+				    success: function(data) {
+				    	var allPeerMsgs = JSON.parse(data);
+				    	if(allPeerMsgs!=null){
+				    		all = allPeerMsgs.allprivatemessages
+				    		if(all!=null){
+				    			for(i=0;i<all.length;i++){
+						      		peername = all[i].peer
+						      		if(!privateChats.has(peername)){
+						      			privateChats.set(peername, [])
+						      		}
+						      		pchats = privateChats.get(peername)
+						      		msgs = all[i].privatemessages
+						      		if(msgs!=null){
+						      			for(j=0;j<msgs.length;j++){
+							      			elem = "<li>"+msgs[j]+"</li>";
+								      		if(pchats.indexOf(elem)== -1){
+								      			pchats.push(elem)
+								      			id="chats"+peername;
+								      			window.onload = function(){
+								      				document.getElementById(id).innerHTML += elem;
+								      			}
+								      			
+								      		}
+							      		}
+						      		}
+						        }
+				    		}
+				    	}
+				    },
+				    complete: function() {
+				    	
+				      	setTimeout(worker4, 3000);
+				    }
+				  });
+			  	return false;
+			})();
+			(function worker2() {
+			  $.ajax({
+			    url: backend+'nodes', 
+			    success: function(data) {
+			      	var nodes = JSON.parse(data);
+			      	var list = "";
+			      	if(nodes!=null){
+			      		nodes.sort();
+			      		for(i=0; i<nodes.length; i++){
+				        	list +="<li>"+nodes[i]+"</li>";
+				        }
+			      	}
+			      	$("#nodes").empty();
+			      	$("#nodes").append(list);
+			    },
+			    complete: function() {
+			      setTimeout(worker2, 3000);
+			    }
+			  });
+			  return false;
+			})();
+			(function worker5() {
+			  $.ajax({
+			    url: backend+'getsearch', 
+			    success: function(data) {
+			      	var files = JSON.parse(data);
+			      	var list = "";
+			      	if(files!=null){
+			      		for(i=0; i<files.length; i++){
+				        	list +='<li><a target="_blank" href="'+backend+'download?file='+files[i]+'">'+files[i]+'</li>';
+				        }
+			      	}
+			      	$("#searchresults").empty();
+			      	$("#searchresults").append(list);
+			    },
+			    complete: function() {
+			      setTimeout(worker5, 3000);
+			    }
+			  });
+			  return false;
+			})();
+			(function worker3() {
+			  $.ajax({
+			    url: backend+'routablepeers', 
+			    success: function(data) {
+			      	var nodes = JSON.parse(data);
+			      	if(nodes!=null){
+			      		nodes.sort();
+			      	}
+			      	if(nodes!=null){
+			      		for(i=0; i<nodes.length; i++){
+			      			if(routable.indexOf(nodes[i])==-1){
+			      				routable.push(nodes[i]);
+			      				elems=""
+			      				if(privateChats.has(nodes[i])){
+			      					pchats = privateChats.get(nodes[i])
+				      				for(j=0;j<pchats.length;j++){
+				      					elems+=pchats[j];
+				      				}
+			      				}
+			      				elem = '<li id=pm'+nodes[i]+' ><h4>Private chat with '+nodes[i]+'</h4>'+
+					        	'<div id="d'+nodes[i]+'" style="height:50px;width:300px;border:1px solid #ccc;overflow:auto;">'
+									+'<ul id=chats'+nodes[i]+'>'+elems+
+									'</ul></div>'+
+								'<div style="margin-bottom:10px"><form id="sendpm'+nodes[i]+'" action="#">'+
+									  '<input id="msg'+nodes[i]+'" name="message'+nodes[i]+'" type="text" />'+
+									  '<input name="sendmessage'+nodes[i]+'" type="submit" value="Send to '+nodes[i]+'"/></form></div>'
+					        	+"</li>";
+					        	li = document.createElement('li');
+					        	document.getElementById("routablenodes").appendChild(li);
+					        	div = document.createElement('div');
+					        	//document.getElementById("pm"+nodes[i]).appendChild(div);
+					        	//document.body.appendChild("chats"+nodes[i])
+					        	document.getElementById("routablenodes").innerHTML += elem;
+				 
+				        		/*$('#sendpm'+nodes[i]).submit(function(e) {
+				        			e.PreventDefault();
+				        			id = $(this).attr("id");
+				        			id = id.substring(6,id.length)
+				        			alert(id);
+				        			var msg = $('input[name=message'+id+']');
+							        $.post(backend+"privatemessage",
+							        {
+							        	dest : id,
+							        	message : msg.val()
+							        },
+							        function(data, status){
+
+							        }
+							        )
+							        
+							        return false;
+							    });*/
+			      			}
+				        }
+				        for(i=0; i<routable.length;i++){
+				        	if(nodes.indexOf(routable[i])==-1){
+				        		//routable.remove(i);
+				        		document.getElementById(routable[i]) = "";
+				        	}
+				        }
+			      	}else{
+			      		routablepeers.empty();
+			      		document.getElementById("routablenodes").innerHTML = "";
+			      	}
+			    },
+			    complete: function() {
+			      setTimeout(worker3, 3000);
+			    }
+			  });
+			  return false;
+			})();
+		});
+	</script>
+</head>
+<body>
+	<div id=container>
+		<div id=left>
+	  		<h2>Chat Box</h2>
+			<div style="height:500px;width:450px;border:1px solid #ccc;overflow:auto;">
+				<ul id=chats>
+				</ul>
+			</div>
+			<div>
+				<form id=send action="">
+				  <input id="msg" name="message" type="text" />
+				  <input name="sendmessage" type="submit" value="Send message"/>
+				</form>
+			</div>
+	  	</div>
+	  	<div id=middle>
+	  		<div>
+	  			<h2>Nodes Box</h2>
+		  		<div>
+		  			<form id=addpeer action="">
+					  <input id="ipport" name="ipport" type="text" />
+					  <input name="addpeer" type="submit" value="Add new peer"/>
+					</form>
+		  		</div>
+		  		<ul id=nodes>
+		  		</ul>
+	  		</div>
+	  		<div style="margin-top: 15px">
+	  			<h2>Routable Nodes Box</h2>
+	  			<ul id=routablenodes>
+		  		</ul>
+	  		</div>
+	  		
+	  	</div>
+	  	<div id=right>
+	  		<div>
+		  		<h2>ID Box</h2>
+		  		<form id=savename action="">
+				  <input id="newname" name="newname" type="text" />
+				  <input name="save" type="submit" value="Save name"/>
+				</form>
+	  		</div>
+	  		<div style="margin-top: 20px">
+	  			<h2>File Sharing Box</h2>
+	  			<form id=sharefile action="">
+				  <input type="file" name="filename" />
+				  <input style="margin-top: 5px" name="share" type="submit" value="Share file"/>
+				</form>
+	  		</div>
+	  		<div style="margin-top: 20px">
+		  		<h2>File Search Box</h2>
+		  		<form id=searchfiles action="">
+				  <input id="keywords" name="keywords" type="text" />
+				  <input name="search" type="submit" value="Search by keywords"/>
+				</form>
+				<ul id=searchresults style="margin-left: 15px">
+				</ul>
+	  		</div>
+	  	</div>
+	</div>
+</body>
+</html>

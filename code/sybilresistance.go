@@ -11,10 +11,13 @@ type SybilResistanceHandler struct{
 	//TODO add a state structure for part2
 }
 
-func (srh *SybilResistanceHandler) handleGossipPacket(gp *GossipPacket, from *net.UDPAddr){
+//returns whether the gossip packet is allowed or not according to the sybil resistance protocol
+func (srh *SybilResistanceHandler) handleGossipPacket(gp *GossipPacket, from *net.UDPAddr)bool{
 	if(srh.localChain.containsValidNodeID(gp.NodeID)){
 		//TODO : handle this with the part 2 structure
+		return true
 	}else{
 		srh.ps.sendPuzzleProposal(from)
+		return false
 	}
 }

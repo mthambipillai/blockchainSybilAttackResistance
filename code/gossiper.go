@@ -271,6 +271,9 @@ func listenPeers(state *State){
         n,addr,_ := state.me.conn.ReadFromUDP(packetBytes)
         err := protobuf.Decode(packetBytes[:n], packet)
         if(err==nil){
+        	if(!state.srh.handleGossipPacket(packet, addr)){
+        		return
+        	}
         	isRumor := packet.Rumor!=nil && packet.Status==nil && packet.Message==nil && packet.DRequest==nil && packet.DReply==nil && packet.SRequest==nil && packet.SReply==nil
         	isStatus := packet.Rumor==nil && packet.Status!=nil && packet.Message==nil && packet.DRequest==nil && packet.DReply==nil && packet.SRequest==nil && packet.SReply==nil
         	isMessage := packet.Rumor==nil && packet.Status==nil && packet.Message!=nil && packet.DRequest==nil && packet.DReply==nil && packet.SRequest==nil && packet.SReply==nil

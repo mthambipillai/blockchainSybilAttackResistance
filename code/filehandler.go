@@ -176,7 +176,7 @@ func (state *State) sendDataRequest(dest string, filename string, hash []byte, d
 	if(ok){
 		dr := &DataRequest{state.me.identifier, dest, 10, filename, hash}
 		printSendDReq(dr)
-		send(&GossipPacket{DRequest: dr},state.me.conn, nexthop)
+		state.send(&GossipPacket{DRequest: dr},state.me.conn, nexthop)
 		t := time.NewTimer(time.Second*5)
 		state.setPending(dest,hex.EncodeToString(hash), t, data)
 		go func() {
@@ -189,14 +189,14 @@ func (state *State) sendDataRequest(dest string, filename string, hash []byte, d
 func (state *State) forwardDataRequest(dr *DataRequest){
 	nexthop,ok := state.nextHops[dr.Destination]
 	if(ok){
-		send(&GossipPacket{DRequest: dr},state.me.conn, nexthop)
+		state.send(&GossipPacket{DRequest: dr},state.me.conn, nexthop)
 	}
 }
 
 func (state *State) forwardDataReply(dr *DataReply){
 	nexthop,ok := state.nextHops[dr.Destination]
 	if(ok){
-		send(&GossipPacket{DReply: dr},state.me.conn, nexthop)
+		state.send(&GossipPacket{DReply: dr},state.me.conn, nexthop)
 	}
 }
 
@@ -207,7 +207,7 @@ func (state *State) replyToDataRequest(dr *DataRequest){
 		if(ok){
 			dReply := &DataReply{state.me.identifier, dr.Origin, 10, dr.FileName, dr.HashValue, data}
 			printSendDRep(dReply)
-			send(&GossipPacket{DReply: dReply},state.me.conn, nexthop)
+			state.send(&GossipPacket{DReply: dReply},state.me.conn, nexthop)
 		}	
 	}
 }
@@ -292,7 +292,7 @@ func (state *State) startFileSearch(keywords []string, budget uint64){
 					budgets := state.splitBudget(budget, state.gossipers)
 					for i,b := range(budgets){
 						sr := &SearchRequest{state.me.identifier, b, keywords}
-						send(&GossipPacket{SRequest: sr},state.me.conn, state.gossipers[i].address)
+						state.send(&GossipPacket{SRequest: sr},state.me.conn, state.gossipers[i].address)
 					}
 					budget = budget*uint64(2)
 					state.budget = budget
@@ -382,7 +382,7 @@ func (state *State) handleSearchRequest(sr *SearchRequest, from *net.UDPAddr){
 		if(ok){
 			reply := &SearchReply{state.me.identifier, sr.Origin, 10, results}
 			printSendSRep(reply)
-			send(&GossipPacket{SReply: reply},state.me.conn, nexthop)
+			state.send(&GossipPacket{SReply: reply},state.me.conn, nexthop)
 		}
 	}
 }
@@ -452,14 +452,14 @@ func (state *State) forwardSearchRequest(sr *SearchRequest, from *net.UDPAddr){
 	for i,b := range(budgets){
 		nsr := &SearchRequest{sr.Origin, b, sr.Keywords}
 		printSendSReq(nsr)
-		send(&GossipPacket{SRequest: nsr},state.me.conn, otherPeers[i].address)
+		state.send(&GossipPacket{SRequest: nsr},state.me.conn, otherPeers[i].address)
 	}
 }
 
 func (state *State) forwardSearchReply(sr *SearchReply){
 	nexthop,ok := state.nextHops[sr.Destination]
 	if(ok){
-		send(&GossipPacket{SReply: sr},state.me.conn, nexthop)
+		state.send(&GossipPacket{SReply: sr},state.me.conn, nexthop)
 	}
 }
 

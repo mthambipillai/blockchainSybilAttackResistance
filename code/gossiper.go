@@ -214,13 +214,6 @@ func main() {
 	genesis := flag.Bool("genesis",false,"if set to true this peer will start its own blockchain.")
 	flag.Parse()
 
-	bc := &BlockChain{}
-	myID := uint64(1)
-	if(*genesis){
-		bc.initGenesis(myID,rsa.PublicKey{})
-	}
-	ps := &PuzzlesState{bc}
-	srh := &SybilResistanceHandler{myID, bc, ps}
 	ipPort := strings.Split(*gossipIPPort,":")
 	ip :="127.0.0.1"
 	if(len(ipPort)==2){
@@ -236,6 +229,14 @@ func main() {
 	myGossipConn, _:= net.ListenUDP("udp", me.address)
 	me.conn = myGossipConn
 	defer myGossipConn.Close()
+
+	bc := &BlockChain{}
+	myID := uint64(1)
+	if(*genesis){
+		bc.initGenesis(myID, rsa.PublicKey{})
+	}
+	ps := &PuzzlesState{myID, bc, myGossipConn}
+	srh := &SybilResistanceHandler{myID, bc, ps}
 
 	gossipers := parseOtherPeers(*peers)
 

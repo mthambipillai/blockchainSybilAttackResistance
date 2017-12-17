@@ -1,6 +1,9 @@
 package main
 import(
 	"time"
+	"net"
+	"github.com/dedis/protobuf"
+	"fmt"
 )
 type PuzzleProposal struct{
 	Origin			string
@@ -21,7 +24,9 @@ type BlockBroadcast struct{
 }
 
 type PuzzlesState struct{
+	MyID		uint64
 	LocalChain	*BlockChain
+	conn		*net.UDPConn
 }
 
 
@@ -35,4 +40,20 @@ func (ps *PuzzlesState) handlePuzzleResponse(pp *PuzzleProposal){
 
 func (ps *PuzzlesState) handleBlockBroadcast(pp *PuzzleProposal){
 
+}
+
+func (ps *PuzzlesState) sendPuzzleProposal(dest *net.UDPAddr){
+
+}
+
+func (ps *PuzzlesState) send(msg *GossipPacket, dest_addr *net.UDPAddr){
+	msg.NodeID = ps.MyID
+    packetBytes, err1 := protobuf.Encode(msg)
+    if(err1!=nil){
+        fmt.Println(err1, " dest : ", dest_addr.String())
+    }
+    _,err2 := ps.conn.WriteToUDP(packetBytes,dest_addr)
+    if err2 != nil {
+        fmt.Println(err2, " dest : ", dest_addr.String())
+    }
 }

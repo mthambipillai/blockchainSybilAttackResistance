@@ -134,7 +134,8 @@ func (state *State) changeOwnName(newName string){
 	state.me.identifier = newName
 }
 
-func send(msg *GossipPacket,conn *net.UDPConn, dest_addr *net.UDPAddr){
+func (state *State) send(msg *GossipPacket,conn *net.UDPConn, dest_addr *net.UDPAddr){
+	msg.NodeID = state.srh.MyID
 	if(msg.Rumor!=nil){
 		if(msg.Rumor.Text!=""){
 			printMongering(dest_addr)
@@ -157,7 +158,7 @@ func (state *State) sendPrivateMessage(content string, dest string) bool{
 	nexthop,ok := state.nextHops[dest]
 	if(ok){
 		pm := &PrivateMessage{state.me.identifier,0,content, dest, 10,nil,nil}
-		send(&GossipPacket{Message : pm}, state.me.conn, nexthop)
+		state.send(&GossipPacket{Message : pm}, state.me.conn, nexthop)
 		printSendPM(pm,nexthop)
 		spm := StoredPM{state.me.identifier, pm.ID, pm.Text, time.Now().UnixNano() / int64(time.Millisecond)}
 		state.privateMsgs[dest] = append(state.privateMsgs[dest],spm)
@@ -169,7 +170,7 @@ func (state *State) sendPrivateMessage(content string, dest string) bool{
 func (state *State) sendPrivateMessageCLI(pm *PrivateMessage) bool{
 	nexthop,ok := state.nextHops[pm.Dest]
 	if(ok){
-		send(&GossipPacket{Message : pm}, state.me.conn, nexthop)
+		state.send(&GossipPacket{Message : pm}, state.me.conn, nexthop)
 		printSendPM(pm,nexthop)
 		spm := StoredPM{state.me.identifier, pm.ID, pm.Text, time.Now().UnixNano() / int64(time.Millisecond)}
 		state.privateMsgs[pm.Dest] = append(state.privateMsgs[pm.Dest],spm)
@@ -189,7 +190,7 @@ func (state *State) forwardPrivateMessage(pm *PrivateMessage) bool{
 	if(ok){
 		pm.HopLimit = pm.HopLimit -1
 		if(pm.HopLimit>0){
-			send(&GossipPacket{Message : pm}, state.me.conn, nexthop)
+			state.send(&GossipPacket{Message : pm}, state.me.conn, nexthop)
 			return true
 		}else{
 			return false
@@ -333,11 +334,11 @@ func (state *State) getPrivateMsgsFrom(time int64, peer string)[]StoredPM{
 }
 
 func (state *State) sendRumorTo(msg *RumorMessage, dest *net.UDPAddr){
-	send(&GossipPacket{Rumor : msg}, state.me.conn, dest)
+	state.send(&GossipPacket{Rumor : msg}, state.me.conn, dest)
 }
 
 func (state *State) sendStatusTo(dest *net.UDPAddr){
-	send(&GossipPacket{Status : state.vectorClock}, state.me.conn, dest)
+	state.send(&GossipPacket{Status : state.vectorClock}, state.me.conn, dest)
 }
 
 func (state *State) waitForAck(msg *RumorMessage, from *net.UDPAddr){

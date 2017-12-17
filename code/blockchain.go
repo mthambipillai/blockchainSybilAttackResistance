@@ -91,12 +91,15 @@ func (bc *BlockChain) addBlock(b *Block) bool{
 	}
 }
 
-func (bc *BlockChain) containsNodeID(id uint64) bool{
+func (bc *BlockChain) containsValidNodeID(id uint64) bool{
 	if(bc.BlocksPerNodeID==nil){
 		return false
 	}
-	_,ok := bc.BlocksPerNodeID[id]
-	return ok
+	b,ok := bc.BlocksPerNodeID[id]
+	if(ok){
+		return b.isValid()
+	}
+	return false
 }
 
 func (bc *BlockChain) getLastHash() []byte{

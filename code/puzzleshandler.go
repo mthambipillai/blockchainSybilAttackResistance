@@ -25,6 +25,7 @@ type BlockBroadcast struct{
 
 type PuzzlesState struct{
 	MyID		uint64
+	MyName		string
 	LocalChain	*BlockChain
 	conn		*net.UDPConn
 }
@@ -43,7 +44,8 @@ func (ps *PuzzlesState) handleBlockBroadcast(pp *PuzzleProposal){
 }
 
 func (ps *PuzzlesState) sendPuzzleProposal(dest *net.UDPAddr){
-
+	pp := &PuzzleProposal{ps.MyName,ps.LocalChain.nextNodeID(),time.Now(),ps.LocalChain.LastBlock.hash()}
+	ps.send(&GossipPacket{PProposal: pp},dest)
 }
 
 func (ps *PuzzlesState) send(msg *GossipPacket, dest_addr *net.UDPAddr){

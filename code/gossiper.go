@@ -235,7 +235,7 @@ func main() {
 	if(*genesis){
 		bc.initGenesis(myID, rsa.PublicKey{})
 	}
-	ps := &PuzzlesState{myID, bc, myGossipConn}
+	ps := &PuzzlesState{myID, *name, bc, myGossipConn}
 	srh := &SybilResistanceHandler{myID, bc, ps}
 
 	gossipers := parseOtherPeers(*peers)

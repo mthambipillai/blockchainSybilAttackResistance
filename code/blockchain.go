@@ -125,6 +125,21 @@ func (bc *BlockChain) initGenesis(id uint64, pub rsa.PublicKey){
 	bc.LastBlock = b
 }
 
+func (bc *BlockChain) nextNodeID()uint64{
+	i := uint64(0)
+	for{
+		b,ok := bc.BlocksPerNodeID[i]
+		if(!ok){
+			return i
+		}
+		if(!b.isValid()){
+			return i
+		}
+		i=i+1
+	}
+	return i
+}
+
 func mineBlock(id uint64, timestamp time.Time, pub rsa.PublicKey, previousHash []byte) *Block{
 	i := 0
 	start := time.Now()

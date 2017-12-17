@@ -83,6 +83,7 @@ type GossipPacket struct {
     DReply *DataReply
     SRequest *SearchRequest
     SReply *SearchReply
+    PProposal *PuzzleProposal
 }
 
 type Gossiper struct {

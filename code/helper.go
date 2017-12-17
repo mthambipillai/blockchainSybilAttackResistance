@@ -75,6 +75,7 @@ type StatusPacket struct {
 }
 
 type GossipPacket struct {
+	NodeID uint64
     Rumor *RumorMessage
     Status *StatusPacket
     Message *PrivateMessage
@@ -126,6 +127,7 @@ type State struct{
 	searchToRetrieve []string
 	searchReceived []*SearchRequest
 	budget uint64
+	srh *SybilResistanceHandler
 }
 
 func (state *State) changeOwnName(newName string){

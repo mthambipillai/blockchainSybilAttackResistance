@@ -12,6 +12,7 @@ import(
 	"strings"
 	"time"
 	"math/rand"
+	"crypto/rsa"
 )
 
 func sendRumorToRandom(rumor *RumorMessage, state *State){
@@ -210,8 +211,16 @@ func main() {
 	peers := flag.String("peers","127.0.0.1:5001","other gossipers")
 	rtimer := flag.Int("rtimer",60,"period of sending routing mesages (seconds)")
 	noforward := flag.Bool("noforward",false,"if set to true this peer will not forward any message.")
+	genesis := flag.Bool("genesis",false,"if set to true this peer will start its own blockchain.")
 	flag.Parse()
 
+	bc := &BlockChain{}
+	myID := uint64(1)
+	if(*genesis){
+		bc.initGenesis(myID,rsa.PublicKey{})
+	}
+	ps := &PuzzlesState{bc}
+	srh := &SybilResistanceHandler{myID, bc, ps}
 	ipPort := strings.Split(*gossipIPPort,":")
 	ip :="127.0.0.1"
 	if(len(ipPort)==2){
@@ -241,7 +250,8 @@ func main() {
 	downloads := &Downloads{make(map[string]Download)}
 
 	state := &State{me, gossipers, vectorClock, msgsSeen, pendingAcks, 1, lastSeqnSeen,
-		nexthops, privateMsgs, *noforward, files, downloads, nil, false, make(chan string),nil,make([]*SearchRequest,0),0}
+		nexthops, privateMsgs, *noforward, files, downloads, nil, false, make(chan string),
+		nil,make([]*SearchRequest,0),0,srh}
 
 	go webServer(state, ip+":"+strconv.Itoa(*uiPort-1000))
 	go routingMessages(state, *rtimer)

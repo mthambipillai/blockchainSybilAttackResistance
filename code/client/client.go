@@ -34,6 +34,7 @@ type StatusPacket struct {
 }
 
 type GossipPacket struct {
+    NodeID uint64
     Rumor *RumorMessage
     Status *StatusPacket
     Message *PrivateMessage

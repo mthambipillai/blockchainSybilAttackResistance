@@ -21,7 +21,7 @@ type BlockBroadcast struct{
 }
 
 type PuzzlesState struct{
-	LocalChain	BlockChain
+	LocalChain	*BlockChain
 }
 
 

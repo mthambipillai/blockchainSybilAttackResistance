@@ -8,9 +8,10 @@ import(
 	"bytes"
 	"fmt"
 	"math"
+	"strconv"
 )
 
-const difficulty = 5
+const difficulty = 16
 const expiration = time.Second*60
 
 type BlockChain struct{
@@ -97,6 +98,7 @@ func (bc *BlockChain) containsValidNodeID(id uint64) bool{
 	}
 	b,ok := bc.BlocksPerNodeID[id]
 	if(ok){
+
 		return b.isValid()
 	}
 	return false
@@ -127,7 +129,7 @@ func (bc *BlockChain) initGenesis(id uint64, pub rsa.PublicKey){
 }
 
 func (bc *BlockChain) nextNodeID()uint64{
-	i := uint64(0)
+	i := uint64(1)
 	for{
 		b,ok := bc.BlocksPerNodeID[i]
 		if(!ok){
@@ -153,8 +155,8 @@ func mineBlock(id uint64, timestamp time.Time, pub rsa.PublicKey, previousHash [
 			return trial
 		}
 		i=i+1
-		if(i%1000==0){
-			fmt.Println("Tried "+string(i)+" different nonces.")
+		if(i%1000000==0){
+			fmt.Println("Tried "+strconv.Itoa(i/1000000)+" million different nonces.")
 		}
 		if(time.Since(start).Nanoseconds() > expiration.Nanoseconds()){
 			return nil

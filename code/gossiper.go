@@ -220,9 +220,7 @@ func main() {
 	rtimer := flag.Int("rtimer",60,"period of sending routing mesages (seconds)")
 	noforward := flag.Bool("noforward",false,"if set to true this peer will not forward any message.")
 	genesis := flag.Bool("genesis",false,"if set to true this peer will start its own blockchain.")
-	myIDP := flag.Int("nodeid",1,"node's id for sybil resistance identifier")
 	flag.Parse()
-	myID := uint64(*myIDP)
 
 	ipPort := strings.Split(*gossipIPPort,":")
 	ip :="127.0.0.1"
@@ -240,11 +238,12 @@ func main() {
 	me.conn = myGossipConn
 
 	bc := &BlockChain{}
+	myID := uint64(1)
 	if(*genesis){
 		bc.initGenesis(myID, rsa.PublicKey{})
 	}
-	ps := &PuzzlesState{myID, *name, bc, myGossipConn, make([]string, 0)}
-	srh := &SybilResistanceHandler{myID, bc, ps}
+	ps := &PuzzlesState{myID, *name, bc, myGossipConn, make(map[string]*PuzzleProposal, 0)}
+	srh := &SybilResistanceHandler{ps}
 
 	defer myGossipConn.Close()
 

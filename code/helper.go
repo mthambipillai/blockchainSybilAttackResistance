@@ -137,7 +137,7 @@ func (state *State) changeOwnName(newName string){
 }
 
 func (state *State) send(msg *GossipPacket,conn *net.UDPConn, dest_addr *net.UDPAddr){
-	msg.NodeID = state.srh.MyID
+	msg.NodeID = state.srh.ps.MyID
 	if(msg.Rumor!=nil){
 		if(msg.Rumor.Text!=""){
 			printMongering(dest_addr)

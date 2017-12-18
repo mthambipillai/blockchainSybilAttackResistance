@@ -29,7 +29,7 @@ type PuzzlesState struct{
 	MyName		string
 	LocalChain	*BlockChain
 	conn		*net.UDPConn
-	waiting		[]string
+	waiting		map[string]*PuzzleProposal
 }
 
 
@@ -37,12 +37,24 @@ func (ps *PuzzlesState) handlePuzzleProposal(pp *PuzzleProposal, from *net.UDPAd
 	fmt.Println("Received puzzle proposal. Start mining.")
 	b := mineBlock(pp.NodeID, pp.Timestamp, rsa.PublicKey{}, pp.PreviousHash)
 	fmt.Println("Done mining. Send puzzle response.")
+	ps.MyID = pp.NodeID 
 	pr := &PuzzleResponse{ps.MyName, pp.Origin, b}
 	ps.send(&GossipPacket{PResponse: pr}, from)
 }
 
 func (ps *PuzzlesState) handlePuzzleResponse(pr *PuzzleResponse, from *net.UDPAddr){
 	fmt.Println("Received puzzle response.")
+	pp,ok := ps.waiting[from.String()]
+	if(ok && pr.Destination==ps.MyName){
+		if(pr.CreatedBlock.NodeID==pp.NodeID && pr.CreatedBlock.Timestamp.Equal(pp.Timestamp)){
+			success := ps.LocalChain.addBlock(pr.CreatedBlock)
+			if(success){
+				delete(ps.waiting, from.String())
+				fmt.Println("The puzzle response is correct.")
+				//handle block broadcast
+			}
+		}	
+	}
 }
 
 func (ps *PuzzlesState) handleBlockBroadcast(bb *BlockBroadcast){
@@ -51,19 +63,17 @@ func (ps *PuzzlesState) handleBlockBroadcast(bb *BlockBroadcast){
 
 func (ps *PuzzlesState) handleJoining(joiner *net.UDPAddr){
 	if(ps.LocalChain.LastBlock!=nil){
-		for _,j := range(ps.waiting){
-			if(j==joiner.String()){
-				return
-			}
+		_,ok := ps.waiting[joiner.String()]
+		if(!ok){
+			ps.sendPuzzleProposal(joiner)
 		}
-		ps.sendPuzzleProposal(joiner)
-		ps.waiting = append(ps.waiting, joiner.String())
 	}
 }
 
 func (ps *PuzzlesState) sendPuzzleProposal(dest *net.UDPAddr){
 	fmt.Println("Send puzzle proposal.")
 	pp := &PuzzleProposal{ps.MyName,ps.LocalChain.nextNodeID(),time.Now(),ps.LocalChain.LastBlock.hash()}
+	ps.waiting[dest.String()] = pp
 	ps.send(&GossipPacket{PProposal: pp}, dest)
 }
 

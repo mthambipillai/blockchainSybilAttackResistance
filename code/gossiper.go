@@ -99,6 +99,14 @@ func receivesSearchReplyFromPeer(sr *SearchReply, from *net.UDPAddr, state *Stat
 	}
 }
 
+func receivesPuzzleProposalFromPeer(pp *PuzzleProposal, from *net.UDPAddr, state *State){
+	state.srh.ps.handlePuzzleProposal(pp, from)
+}
+
+func receivesPuzzleResponseFromPeer(pr *PuzzleResponse, from *net.UDPAddr, state *State){
+	state.srh.ps.handlePuzzleResponse(pr, from)
+}
+
 func receivesRumorFromPeer(rumor *RumorMessage, from *net.UDPAddr, state *State){
 	state.addPeerFromLast(rumor)
 	state.overwriteLast(rumor, from)
@@ -212,7 +220,9 @@ func main() {
 	rtimer := flag.Int("rtimer",60,"period of sending routing mesages (seconds)")
 	noforward := flag.Bool("noforward",false,"if set to true this peer will not forward any message.")
 	genesis := flag.Bool("genesis",false,"if set to true this peer will start its own blockchain.")
+	myIDP := flag.Int("nodeid",1,"node's id for sybil resistance identifier")
 	flag.Parse()
+	myID := uint64(*myIDP)
 
 	ipPort := strings.Split(*gossipIPPort,":")
 	ip :="127.0.0.1"
@@ -228,15 +238,15 @@ func main() {
 	me := newGossiper(*gossipIPPort,*name)
 	myGossipConn, _:= net.ListenUDP("udp", me.address)
 	me.conn = myGossipConn
-	defer myGossipConn.Close()
 
 	bc := &BlockChain{}
-	myID := uint64(1)
 	if(*genesis){
 		bc.initGenesis(myID, rsa.PublicKey{})
 	}
 	ps := &PuzzlesState{myID, *name, bc, myGossipConn}
 	srh := &SybilResistanceHandler{myID, bc, ps}
+
+	defer myGossipConn.Close()
 
 	gossipers := parseOtherPeers(*peers)
 
@@ -271,9 +281,7 @@ func listenPeers(state *State){
         n,addr,_ := state.me.conn.ReadFromUDP(packetBytes)
         err := protobuf.Decode(packetBytes[:n], packet)
         if(err==nil){
-        	if(!state.srh.handleGossipPacket(packet, addr)){
-        		return
-        	}
+        	fmt.Println("received from ",*addr)
         	isRumor := packet.Rumor!=nil && packet.Status==nil && packet.Message==nil && packet.DRequest==nil && packet.DReply==nil && packet.SRequest==nil && packet.SReply==nil
         	isStatus := packet.Rumor==nil && packet.Status!=nil && packet.Message==nil && packet.DRequest==nil && packet.DReply==nil && packet.SRequest==nil && packet.SReply==nil
         	isMessage := packet.Rumor==nil && packet.Status==nil && packet.Message!=nil && packet.DRequest==nil && packet.DReply==nil && packet.SRequest==nil && packet.SReply==nil
@@ -281,26 +289,40 @@ func listenPeers(state *State){
         	isDReply := packet.Rumor==nil && packet.Status==nil && packet.Message==nil && packet.DRequest==nil && packet.DReply!=nil && packet.SRequest==nil && packet.SReply==nil
         	isSRequest := packet.Rumor==nil && packet.Status==nil && packet.Message==nil && packet.DRequest==nil && packet.DReply==nil && packet.SRequest!=nil && packet.SReply==nil
         	isSReply := packet.Rumor==nil && packet.Status==nil && packet.Message==nil && packet.DRequest==nil && packet.DReply==nil && packet.SRequest==nil && packet.SReply!=nil
+        	isPProposal := packet.PProposal!=nil
+        	isPResponse := packet.PResponse!=nil
+
         	if(!state.alreadyKnowPeer(addr)){
         		state.addPeer(addr)
         	}
-        	if(isStatus){
-        		printPeers(state)
-        		receivesStatusFromPeer(packet.Status, addr, state)
-        	}else if(isRumor){
-        		receivesRumorFromPeer(packet.Rumor, addr, state)
-        	}else if(isMessage){
-        		receivesPrivateMessageFromPeer(packet.Message, addr, state)
-        	}else if(isDRequest){
-        		receivesDataRequestFromPeer(packet.DRequest, addr, state)
-    		}else if(isDReply){
-    			receivesDataReplyFromPeer(packet.DReply, addr, state)
-    		}else if(isSRequest){
-    			receivesSearchRequestFromPeer(packet.SRequest, addr, state)
-    		}else if(isSReply){
-    			receivesSearchReplyFromPeer(packet.SReply, addr, state)
-    		}else{
-        		fmt.Println("Need to have either a rumor or a status or a private message.")
+        	if(!isPProposal && !isPResponse){
+        		if(state.srh.handleGossipPacket(packet, addr)){
+        			if(isStatus){
+		        		printPeers(state)
+		        		receivesStatusFromPeer(packet.Status, addr, state)
+		        	}else if(isRumor){
+		        		receivesRumorFromPeer(packet.Rumor, addr, state)
+		        	}else if(isMessage){
+		        		receivesPrivateMessageFromPeer(packet.Message, addr, state)
+		        	}else if(isDRequest){
+		        		receivesDataRequestFromPeer(packet.DRequest, addr, state)
+		    		}else if(isDReply){
+		    			receivesDataReplyFromPeer(packet.DReply, addr, state)
+		    		}else if(isSRequest){
+		    			receivesSearchRequestFromPeer(packet.SRequest, addr, state)
+		    		}else if(isSReply){
+		    			receivesSearchReplyFromPeer(packet.SReply, addr, state)
+		    		}else{
+		        		fmt.Println("Need to have only one non-nil field.")
+		        	}
+	        	}
+        	}else{
+        		if(isPProposal){
+    				receivesPuzzleProposalFromPeer(packet.PProposal, addr, state)
+	    		}else if(isPResponse){
+	    			fmt.Println("got pr")
+	    			receivesPuzzleResponseFromPeer(packet.PResponse, addr, state)
+	    		}
         	}
         }else{
         	fmt.Println(err)
@@ -338,7 +360,7 @@ func listenClient(conn *net.UDPConn, state *State){
     		}else if(isSReply){
     			fmt.Println("client not supposed to send search replies.")
     		}else{
-        		fmt.Println("Need to have only 1 non-nil field.")
+        		fmt.Println("Need to have only one non-nil field.")
         	}
         }else{
         	fmt.Println(err)

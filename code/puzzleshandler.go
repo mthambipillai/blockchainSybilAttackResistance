@@ -4,6 +4,7 @@ import(
 	"net"
 	"github.com/dedis/protobuf"
 	"fmt"
+	"crypto/rsa"
 )
 type PuzzleProposal struct{
 	Origin			string
@@ -31,24 +32,29 @@ type PuzzlesState struct{
 }
 
 
-func (ps *PuzzlesState) handlePuzzleProposal(pp *PuzzleProposal){
-
+func (ps *PuzzlesState) handlePuzzleProposal(pp *PuzzleProposal, from *net.UDPAddr){
+	fmt.Println("start mining")
+	b := mineBlock(pp.NodeID, pp.Timestamp, rsa.PublicKey{}, pp.PreviousHash)
+	fmt.Println("done mining")
+	pr := &PuzzleResponse{ps.MyName, pp.Origin, b}
+	ps.send(&GossipPacket{PResponse: pr}, from)
 }
 
-func (ps *PuzzlesState) handlePuzzleResponse(pp *PuzzleProposal){
-
+func (ps *PuzzlesState) handlePuzzleResponse(pr *PuzzleResponse, from *net.UDPAddr){
+	fmt.Println("got pr")
 }
 
-func (ps *PuzzlesState) handleBlockBroadcast(pp *PuzzleProposal){
+func (ps *PuzzlesState) handleBlockBroadcast(bb *BlockBroadcast){
 
 }
 
 func (ps *PuzzlesState) sendPuzzleProposal(dest *net.UDPAddr){
 	pp := &PuzzleProposal{ps.MyName,ps.LocalChain.nextNodeID(),time.Now(),ps.LocalChain.LastBlock.hash()}
-	ps.send(&GossipPacket{PProposal: pp},dest)
+	ps.send(&GossipPacket{PProposal: pp}, dest)
 }
 
 func (ps *PuzzlesState) send(msg *GossipPacket, dest_addr *net.UDPAddr){
+	fmt.Println("send ps to ",*dest_addr)
 	msg.NodeID = ps.MyID
     packetBytes, err1 := protobuf.Encode(msg)
     if(err1!=nil){

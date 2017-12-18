@@ -10,8 +10,8 @@ import(
 	"math"
 )
 
-const difficulty = 18
-const expiration = time.Second*10
+const difficulty = 5
+const expiration = time.Second*60
 
 type BlockChain struct{
 	BlocksPerNodeID map[uint64]*Block
@@ -115,12 +115,13 @@ func (bc *BlockChain) containsBlock(b *Block) bool{
 }
 
 func (bc *BlockChain) initGenesis(id uint64, pub rsa.PublicKey){
-	fmt.Println("start BlockChain")
+	fmt.Println("Start the blockchain.")
 	bc.BlocksPerNodeID = make(map[uint64]*Block)
 	var b *Block = nil
 	for b==nil{
 		b = mineBlock(id,time.Now(),pub,nil)
 	}
+	fmt.Println("Done mining the genesis block.")
 	bc.BlocksPerNodeID[id] = b
 	bc.LastBlock = b
 }
@@ -152,6 +153,9 @@ func mineBlock(id uint64, timestamp time.Time, pub rsa.PublicKey, previousHash [
 			return trial
 		}
 		i=i+1
+		if(i%1000==0){
+			fmt.Println("Tried "+string(i)+" different nonces.")
+		}
 		if(time.Since(start).Nanoseconds() > expiration.Nanoseconds()){
 			return nil
 		}

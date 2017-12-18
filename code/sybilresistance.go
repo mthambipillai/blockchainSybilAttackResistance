@@ -2,7 +2,6 @@ package main
 
 import(
 	"net"
-	"fmt"
 )
 
 type SybilResistanceHandler struct{
@@ -18,12 +17,7 @@ func (srh *SybilResistanceHandler) handleGossipPacket(gp *GossipPacket, from *ne
 		//TODO : handle this with the part 2 structure
 		return true
 	}else{
-		if(srh.localChain.LastBlock!=nil){
-			fmt.Println("send puzzle proposal")
-			srh.ps.sendPuzzleProposal(from)
-			return false
-		}else{
-			return true
-		}
+		srh.ps.handleJoining(from)
+		return false
 	}
 }

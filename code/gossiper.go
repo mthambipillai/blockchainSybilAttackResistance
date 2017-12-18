@@ -243,7 +243,7 @@ func main() {
 	if(*genesis){
 		bc.initGenesis(myID, rsa.PublicKey{})
 	}
-	ps := &PuzzlesState{myID, *name, bc, myGossipConn}
+	ps := &PuzzlesState{myID, *name, bc, myGossipConn, make([]string, 0)}
 	srh := &SybilResistanceHandler{myID, bc, ps}
 
 	defer myGossipConn.Close()
@@ -281,7 +281,6 @@ func listenPeers(state *State){
         n,addr,_ := state.me.conn.ReadFromUDP(packetBytes)
         err := protobuf.Decode(packetBytes[:n], packet)
         if(err==nil){
-        	fmt.Println("received from ",*addr)
         	isRumor := packet.Rumor!=nil && packet.Status==nil && packet.Message==nil && packet.DRequest==nil && packet.DReply==nil && packet.SRequest==nil && packet.SReply==nil
         	isStatus := packet.Rumor==nil && packet.Status!=nil && packet.Message==nil && packet.DRequest==nil && packet.DReply==nil && packet.SRequest==nil && packet.SReply==nil
         	isMessage := packet.Rumor==nil && packet.Status==nil && packet.Message!=nil && packet.DRequest==nil && packet.DReply==nil && packet.SRequest==nil && packet.SReply==nil
@@ -320,7 +319,6 @@ func listenPeers(state *State){
         		if(isPProposal){
     				receivesPuzzleProposalFromPeer(packet.PProposal, addr, state)
 	    		}else if(isPResponse){
-	    			fmt.Println("got pr")
 	    			receivesPuzzleResponseFromPeer(packet.PResponse, addr, state)
 	    		}
         	}

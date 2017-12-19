@@ -107,6 +107,14 @@ func receivesPuzzleResponseFromPeer(pr *PuzzleResponse, from *net.UDPAddr, state
 	state.srh.ps.handlePuzzleResponse(pr, from)
 }
 
+func receivesBlockBroadcastFromPeer(bb *BlockBroadcast, from *net.UDPAddr, state *State){
+	state.srh.ps.handleBlockBroadcast(bb, from)
+}
+
+func receivesBlockChainMessageFromPeer(bcm *BlockChainMessage, from *net.UDPAddr, state *State){
+	state.srh.ps.handleBlockChain(bcm, from)
+}
+
 func receivesRumorFromPeer(rumor *RumorMessage, from *net.UDPAddr, state *State){
 	state.addPeerFromLast(rumor)
 	state.overwriteLast(rumor, from)
@@ -236,18 +244,19 @@ func main() {
 	me := newGossiper(*gossipIPPort,*name)
 	myGossipConn, _:= net.ListenUDP("udp", me.address)
 	me.conn = myGossipConn
+	defer myGossipConn.Close()
+	gossipers := parseOtherPeers(*peers)
 
 	bc := &BlockChain{}
 	myID := uint64(1)
+	joined := false
 	if(*genesis){
 		bc.initGenesis(myID, rsa.PublicKey{})
+		joined = true
 	}
-	ps := &PuzzlesState{myID, *name, bc, myGossipConn, make(map[string]*PuzzleProposal, 0)}
+	
+	ps := &PuzzlesState{myID, *name, joined, bc, myGossipConn, make(map[string]*PuzzleProposal, 0), gossipers}
 	srh := &SybilResistanceHandler{ps}
-
-	defer myGossipConn.Close()
-
-	gossipers := parseOtherPeers(*peers)
 
 	var peersStatus []PeerStatus
 	vectorClock := &StatusPacket{Want : peersStatus}
@@ -289,11 +298,13 @@ func listenPeers(state *State){
         	isSReply := packet.Rumor==nil && packet.Status==nil && packet.Message==nil && packet.DRequest==nil && packet.DReply==nil && packet.SRequest==nil && packet.SReply!=nil
         	isPProposal := packet.PProposal!=nil
         	isPResponse := packet.PResponse!=nil
+        	isBBroadcast := packet.BBroadcast!=nil
+    		isBlockChainMessage := packet.BChain!=nil
 
         	if(!state.alreadyKnowPeer(addr)){
         		state.addPeer(addr)
         	}
-        	if(!isPProposal && !isPResponse){
+        	if(!isPProposal && !isPResponse && !isBBroadcast && !isBlockChainMessage){
         		if(state.srh.handleGossipPacket(packet, addr)){
         			if(isStatus){
 		        		printPeers(state)
@@ -319,7 +330,11 @@ func listenPeers(state *State){
     				receivesPuzzleProposalFromPeer(packet.PProposal, addr, state)
 	    		}else if(isPResponse){
 	    			receivesPuzzleResponseFromPeer(packet.PResponse, addr, state)
-	    		}
+	    		}else if(isBBroadcast){
+	    			receivesBlockBroadcastFromPeer(packet.BBroadcast, addr, state)
+    			}else if(isBlockChainMessage){
+    				receivesBlockChainMessageFromPeer(packet.BChain, addr, state)
+    			}
         	}
         }else{
         	fmt.Println(err)

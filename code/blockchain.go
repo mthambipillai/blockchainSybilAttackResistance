@@ -9,6 +9,7 @@ import(
 	"fmt"
 	"math"
 	"strconv"
+	"strings"
 )
 
 const difficulty = 16
@@ -120,8 +121,9 @@ func (bc *BlockChain) initGenesis(id uint64, pub rsa.PublicKey){
 	fmt.Println("Start the blockchain.")
 	bc.BlocksPerNodeID = make(map[uint64]*Block)
 	var b *Block = nil
+	prevHash := []byte("random string because prevHash cannot be nil")
 	for b==nil{
-		b = mineBlock(id,time.Now(),pub,nil)
+		b = mineBlock(id, time.Now(), pub, prevHash)
 	}
 	fmt.Println("Done mining the genesis block.")
 	bc.BlocksPerNodeID[id] = b
@@ -141,6 +143,15 @@ func (bc *BlockChain) nextNodeID()uint64{
 		i=i+1
 	}
 	return i
+}
+
+func (bc *BlockChain) print(){
+	nodesIDs := make([]string,0)
+	for nodeID, _ := range(bc.BlocksPerNodeID){
+		nodesIDs = append(nodesIDs, strconv.Itoa(int(nodeID)))
+	}
+	s := strings.Join(nodesIDs, " <-- ")
+	fmt.Println(s)
 }
 
 func mineBlock(id uint64, timestamp time.Time, pub rsa.PublicKey, previousHash []byte) *Block{

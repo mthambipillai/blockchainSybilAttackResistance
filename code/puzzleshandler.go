@@ -24,12 +24,33 @@ type BlockBroadcast struct{
 	NewBlock	*Block
 }
 
+type BlockChainMessage struct{
+	Chain 		*BlockChain
+}
+
 type PuzzlesState struct{
 	MyID		uint64
 	MyName		string
+	Joined		bool
 	LocalChain	*BlockChain
 	conn		*net.UDPConn
 	waiting		map[string]*PuzzleProposal
+	peers 		[]*Gossiper
+}
+
+func (ps *PuzzlesState) addNewGossiper(address, identifier string){
+	for _,g := range(ps.peers){
+		if(g.address.String()==address){
+			return
+		}
+	}
+	udpAddr, _:= net.ResolveUDPAddr("udp", address)
+	g := &Gossiper{
+		address: udpAddr,
+		identifier: identifier,
+	}
+
+	ps.peers = append(ps.peers, g)
 }
 
 
@@ -50,19 +71,52 @@ func (ps *PuzzlesState) handlePuzzleResponse(pr *PuzzleResponse, from *net.UDPAd
 			success := ps.LocalChain.addBlock(pr.CreatedBlock)
 			if(success){
 				delete(ps.waiting, from.String())
+				ps.addNewGossiper(from.String(), pr.Origin)
 				fmt.Println("The puzzle response is correct.")
-				//handle block broadcast
+				ps.LocalChain.print()
+				ps.broadcastBlock(pr.CreatedBlock, from)
+				ps.sendBlockChain(from)
 			}
 		}	
 	}
 }
 
-func (ps *PuzzlesState) handleBlockBroadcast(bb *BlockBroadcast){
+func (ps *PuzzlesState) broadcastBlock(b *Block, from *net.UDPAddr){
+	bb := &BlockBroadcast{ps.MyName, b}
+	msg := &GossipPacket{BBroadcast : bb}
+	for _,peer := range(ps.peers){
+		if(peer.address.String()!=from.String()){
+			fmt.Println("Send block to "+peer.address.String())
+			ps.send(msg, peer.address)
+		}
+	}
+}
 
+func (ps *PuzzlesState) sendBlockChain(dest *net.UDPAddr){
+	bcm := &BlockChainMessage{ps.LocalChain}
+	msg := &GossipPacket{BChain : bcm}
+	ps.send(msg, dest)
+}
+
+func (ps *PuzzlesState) handleBlockChain(bcm *BlockChainMessage, from *net.UDPAddr){
+	if(!ps.Joined){
+		ps.LocalChain = bcm.Chain
+		ps.Joined = true
+		fmt.Println("Updated block chain.")
+		ps.LocalChain.print()
+	}
+}
+
+func (ps *PuzzlesState) handleBlockBroadcast(bb *BlockBroadcast, from *net.UDPAddr){
+	added := ps.LocalChain.addBlock(bb.NewBlock)
+	if(added){
+		fmt.Println("Received new block.")
+		ps.broadcastBlock(bb.NewBlock, from)
+	}
 }
 
 func (ps *PuzzlesState) handleJoining(joiner *net.UDPAddr){
-	if(ps.LocalChain.LastBlock!=nil){
+	if(ps.LocalChain.LastBlock!=nil && ps.Joined){
 		_,ok := ps.waiting[joiner.String()]
 		if(!ok){
 			ps.sendPuzzleProposal(joiner)

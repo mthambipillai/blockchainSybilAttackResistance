@@ -85,6 +85,8 @@ type GossipPacket struct {
     SReply *SearchReply
     PProposal *PuzzleProposal
     PResponse *PuzzleResponse
+    BBroadcast *BlockBroadcast
+    BChain *BlockChainMessage
 }
 
 type Gossiper struct {

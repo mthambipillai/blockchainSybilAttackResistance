@@ -104,6 +104,9 @@ func newGossiper(address, identifier string) *Gossiper {
 }
 
 func parseOtherPeers(arg string) []*Gossiper{
+	if(arg==""){
+		return make([]*Gossiper,0)
+	}
 	peers := strings.Split(arg,"_")
 	var gossipers []*Gossiper
 	for index,address := range peers {

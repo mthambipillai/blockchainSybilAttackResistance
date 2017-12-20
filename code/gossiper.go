@@ -188,7 +188,10 @@ func antiEntropy(state *State){
 		for{
 			select{
 			case <- ticker:
-				state.sendStatusTo(state.pickRandomPeer().address)
+				peer := state.pickRandomPeer()
+				if(peer!=nil){
+					state.sendStatusTo(peer.address)
+				}
 			}
 		}
 	}()
@@ -225,7 +228,7 @@ func main() {
 	//guiAddress := flag.String("GUIIpPort","127.0.0.1:8080","the address for the web server")
 	gossipIPPort := flag.String("gossipPort","127.0.0.1:5000","the port towards other gossipers")
 	name := flag.String("name","node","name of gossiper")
-	peers := flag.String("peers","127.0.0.1:5001","other gossipers")
+	peers := flag.String("peers","","other gossipers")
 	rtimer := flag.Int("rtimer",60,"period of sending routing mesages (seconds)")
 	noforward := flag.Bool("noforward",false,"if set to true this peer will not forward any message.")
 	genesis := flag.Bool("genesis",false,"if set to true this peer will start its own blockchain.")
@@ -249,7 +252,7 @@ func main() {
 	gossipers := parseOtherPeers(*peers)
 
 	bc := &BlockChain{}
-	myID := uint64(1)
+	myID := uint64(0)//Block chain starts at id 1, 0 is conventional for 'not joined id'
 	privKey,errRSA := rsa.GenerateKey(crand.Reader,2048)
 	if(errRSA!=nil){
 		panic(errRSA)
@@ -257,6 +260,7 @@ func main() {
 	pubKey := privKey.PublicKey
 	joined := false
 	if(*genesis){
+		myID = uint64(1)
 		bc.initGenesis(myID, &pubKey)
 		joined = true
 	}

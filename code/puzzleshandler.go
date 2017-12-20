@@ -57,12 +57,14 @@ func (ps *PuzzlesState) addNewGossiper(address, identifier string){
 
 
 func (ps *PuzzlesState) handlePuzzleProposal(pp *PuzzleProposal, from *net.UDPAddr){
-	fmt.Println("Received puzzle proposal. Start mining.")
-	b := mineBlock(pp.NodeID, pp.Timestamp, ps.PubKey, pp.PreviousHash)
-	fmt.Println("Done mining. Send puzzle response.")
-	ps.MyID = pp.NodeID
-	pr := &PuzzleResponse{ps.MyName, pp.Origin, b}
-	ps.send(&GossipPacket{PResponse: pr}, from)
+	if(!ps.Joined){
+		fmt.Println("Received puzzle proposal. Start mining.")
+		b := mineBlock(pp.NodeID, pp.Timestamp, ps.PubKey, pp.PreviousHash)
+		fmt.Println("Done mining. Send puzzle response.")
+		ps.MyID = pp.NodeID
+		pr := &PuzzleResponse{ps.MyName, pp.Origin, b}
+		ps.send(&GossipPacket{PResponse: pr}, from)
+	}
 }
 
 func (ps *PuzzlesState) handlePuzzleResponse(pr *PuzzleResponse, from *net.UDPAddr){

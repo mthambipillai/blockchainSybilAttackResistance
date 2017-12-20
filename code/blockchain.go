@@ -18,6 +18,7 @@ const expiration = time.Second*60
 
 type BlockChain struct{
 	BlocksPerNodeID map[uint64]*Block
+	OrderedNodesIDs []uint64
 	LastBlock *Block
 }
 
@@ -109,6 +110,7 @@ func (bc *BlockChain) addBlock(b *Block) bool{
 	if(b.isValid() && matchesLast){
 		bc.BlocksPerNodeID[b.NodeID] = b
 		bc.LastBlock = b
+		bc.OrderedNodesIDs = append(bc.OrderedNodesIDs, b.NodeID)
 		return true
 	}else{
 		return false
@@ -150,6 +152,7 @@ func (bc *BlockChain) initGenesis(id uint64, pub *rsa.PublicKey){
 	fmt.Println("Done mining the genesis block.")
 	bc.BlocksPerNodeID[id] = b
 	bc.LastBlock = b
+	bc.OrderedNodesIDs = []uint64{id}
 }
 
 func (bc *BlockChain) nextNodeID()uint64{
@@ -169,7 +172,7 @@ func (bc *BlockChain) nextNodeID()uint64{
 
 func (bc *BlockChain) print(){
 	nodesIDs := make([]string,0)
-	for nodeID, _ := range(bc.BlocksPerNodeID){
+	for _,nodeID := range(bc.OrderedNodesIDs){
 		nodesIDs = append(nodesIDs, strconv.Itoa(int(nodeID)))
 	}
 	s := strings.Join(nodesIDs, " <-- ")

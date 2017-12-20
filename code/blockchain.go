@@ -10,6 +10,7 @@ import(
 	"math"
 	"strconv"
 	"strings"
+	"math/big"
 )
 
 const difficulty = 16
@@ -23,9 +24,32 @@ type BlockChain struct{
 type Block struct{
 	NodeID 			uint64
 	Timestamp 		time.Time
-	PublicKey		rsa.PublicKey
+	PubKey			BCPublicKey
 	Nonce			[]byte
 	PreviousHash	[]byte
+}
+
+//had to create this because protobuf can't encode math/big.Int 
+type BCPublicKey struct{
+	N []byte
+	E int
+}
+
+func bcPubKeyTorsaPubKey(pub BCPublicKey) rsa.PublicKey{
+	var N big.Int
+	N.GobDecode(pub.N)
+	return rsa.PublicKey{&N, pub.E}
+}
+
+func rsaPubKeyTobcPubKey(pub rsa.PublicKey) BCPublicKey{
+	nBytes,_ := pub.N.GobEncode()
+	return BCPublicKey{nBytes, pub.E}
+}
+
+func pubKeyToBytes(pub BCPublicKey)[]byte{
+	eBytes := make([]byte, 4)
+    binary.LittleEndian.PutUint32(eBytes, uint32(pub.E))
+    return append(pub.N, eBytes...)
 }
 
 func (b *Block) getBytes()[]byte{
@@ -34,16 +58,14 @@ func (b *Block) getBytes()[]byte{
 	timeBytes,_ := b.Timestamp.GobEncode()
 
 	nodeTime := append(nodeIDBytes,timeBytes...)
-	
-	nBytes,_ := b.PublicKey.N.GobEncode()
-	eBytes := make([]byte, 4)
-    binary.LittleEndian.PutUint32(eBytes, uint32(b.PublicKey.E))
-    publicKeyBytes := append(nBytes, eBytes...)
+    publicKeyBytes := pubKeyToBytes(b.PubKey)
 
     nodeTimePubKey := append(nodeTime, publicKeyBytes...)
     nodeTimePubKeyNonce := append(nodeTimePubKey, b.Nonce...)
     return append(nodeTimePubKeyNonce, b.PreviousHash...)
 }
+
+
 
 func (b *Block) hash() []byte{
     hasher := sha256.New()
@@ -117,7 +139,7 @@ func (bc *BlockChain) containsBlock(b *Block) bool{
 	return ok
 }
 
-func (bc *BlockChain) initGenesis(id uint64, pub rsa.PublicKey){
+func (bc *BlockChain) initGenesis(id uint64, pub *rsa.PublicKey){
 	fmt.Println("Start the blockchain.")
 	bc.BlocksPerNodeID = make(map[uint64]*Block)
 	var b *Block = nil
@@ -154,14 +176,15 @@ func (bc *BlockChain) print(){
 	fmt.Println(s)
 }
 
-func mineBlock(id uint64, timestamp time.Time, pub rsa.PublicKey, previousHash []byte) *Block{
+func mineBlock(id uint64, timestamp time.Time, pub *rsa.PublicKey, previousHash []byte) *Block{
 	i := 0
 	start := time.Now()
 	trial := &Block{}
+	bcPubKey := rsaPubKeyTobcPubKey(*pub)
 	for{
 		nonceBytes := make([]byte, 8)
 		binary.LittleEndian.PutUint64(nonceBytes, uint64(i))
-		trial = &Block{id, timestamp, pub, nonceBytes, previousHash}
+		trial = &Block{id, timestamp, bcPubKey, nonceBytes, previousHash}
 		if(trial.isValid()){
 			return trial
 		}

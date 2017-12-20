@@ -31,6 +31,8 @@ type BlockChainMessage struct{
 type PuzzlesState struct{
 	MyID		uint64
 	MyName		string
+	privKey		*rsa.PrivateKey
+	PubKey 		*rsa.PublicKey
 	Joined		bool
 	LocalChain	*BlockChain
 	conn		*net.UDPConn
@@ -56,9 +58,9 @@ func (ps *PuzzlesState) addNewGossiper(address, identifier string){
 
 func (ps *PuzzlesState) handlePuzzleProposal(pp *PuzzleProposal, from *net.UDPAddr){
 	fmt.Println("Received puzzle proposal. Start mining.")
-	b := mineBlock(pp.NodeID, pp.Timestamp, rsa.PublicKey{}, pp.PreviousHash)
+	b := mineBlock(pp.NodeID, pp.Timestamp, ps.PubKey, pp.PreviousHash)
 	fmt.Println("Done mining. Send puzzle response.")
-	ps.MyID = pp.NodeID 
+	ps.MyID = pp.NodeID
 	pr := &PuzzleResponse{ps.MyName, pp.Origin, b}
 	ps.send(&GossipPacket{PResponse: pr}, from)
 }
@@ -76,6 +78,8 @@ func (ps *PuzzlesState) handlePuzzleResponse(pr *PuzzleResponse, from *net.UDPAd
 				ps.LocalChain.print()
 				ps.broadcastBlock(pr.CreatedBlock, from)
 				ps.sendBlockChain(from)
+			}else{
+				fmt.Println("the puzzle response is incorrect.")
 			}
 		}	
 	}
@@ -110,7 +114,8 @@ func (ps *PuzzlesState) handleBlockChain(bcm *BlockChainMessage, from *net.UDPAd
 func (ps *PuzzlesState) handleBlockBroadcast(bb *BlockBroadcast, from *net.UDPAddr){
 	added := ps.LocalChain.addBlock(bb.NewBlock)
 	if(added){
-		fmt.Println("Received new block.")
+		fmt.Println("Received new block and updated block chain.")
+		ps.LocalChain.print()
 		ps.broadcastBlock(bb.NewBlock, from)
 	}
 }

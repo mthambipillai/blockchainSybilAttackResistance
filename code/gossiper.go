@@ -13,6 +13,7 @@ import(
 	"time"
 	"math/rand"
 	"crypto/rsa"
+	crand "crypto/rand"
 )
 
 func sendRumorToRandom(rumor *RumorMessage, state *State){
@@ -249,13 +250,17 @@ func main() {
 
 	bc := &BlockChain{}
 	myID := uint64(1)
+	privKey,errRSA := rsa.GenerateKey(crand.Reader,2048)
+	if(errRSA!=nil){
+		panic(errRSA)
+	}
+	pubKey := privKey.PublicKey
 	joined := false
 	if(*genesis){
-		bc.initGenesis(myID, rsa.PublicKey{})
+		bc.initGenesis(myID, &pubKey)
 		joined = true
 	}
-	
-	ps := &PuzzlesState{myID, *name, joined, bc, myGossipConn, make(map[string]*PuzzleProposal, 0), gossipers}
+	ps := &PuzzlesState{myID, *name, privKey, &pubKey, joined, bc, myGossipConn, make(map[string]*PuzzleProposal, 0), gossipers}
 	srh := &SybilResistanceHandler{ps}
 
 	var peersStatus []PeerStatus

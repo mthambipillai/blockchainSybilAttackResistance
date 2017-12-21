@@ -152,3 +152,15 @@ func (ps *PuzzlesState) send(msg *GossipPacket, dest_addr *net.UDPAddr){
         fmt.Println(err2, " dest : ", dest_addr.String())
     }
 }
+
+func (ps *PuzzlesState) expireJoining(){
+	ticker := time.NewTicker(expiration).C
+	go func(){
+		for{
+			select{
+			case <- ticker:
+				ps.Joined = false
+			}
+		}
+	}()
+}

@@ -265,6 +265,7 @@ func main() {
 		joined = true
 	}
 	ps := &PuzzlesState{myID, *name, privKey, &pubKey, joined, bc, myGossipConn, make(map[string]*PuzzleProposal, 0), gossipers}
+	ps.expireJoining()
 	srh := &SybilResistanceHandler{ps}
 
 	var peersStatus []PeerStatus

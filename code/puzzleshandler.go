@@ -36,7 +36,7 @@ type PuzzlesState struct{
 	Joined		bool
 	LocalChain	*BlockChain
 	conn		*net.UDPConn
-	waiting		map[string]*PuzzleProposal
+	waiting		map[string]*PuzzleProposal      //
 	peers 		[]*Gossiper
 }
 
@@ -51,10 +51,8 @@ func (ps *PuzzlesState) addNewGossiper(address, identifier string){
 		address: udpAddr,
 		identifier: identifier,
 	}
-
 	ps.peers = append(ps.peers, g)
 }
-
 
 func (ps *PuzzlesState) handlePuzzleProposal(pp *PuzzleProposal, from *net.UDPAddr){
 	if(!ps.Joined){
@@ -62,6 +60,7 @@ func (ps *PuzzlesState) handlePuzzleProposal(pp *PuzzleProposal, from *net.UDPAd
 		b := mineBlock(pp.NodeID, pp.Timestamp, ps.PubKey, pp.PreviousHash)
 		fmt.Println("Done mining. Send puzzle response.")
 		ps.MyID = pp.NodeID
+		ps.addNewGossiper(from.String(), pp.Origin) 						// TODO think of it again!
 		pr := &PuzzleResponse{ps.MyName, pp.Origin, b}
 		ps.send(&GossipPacket{PResponse: pr}, from)
 	}
@@ -72,11 +71,11 @@ func (ps *PuzzlesState) handlePuzzleResponse(pr *PuzzleResponse, from *net.UDPAd
 	pp,ok := ps.waiting[from.String()]
 	if(ok && pr.Destination==ps.MyName){
 		if(pr.CreatedBlock.NodeID==pp.NodeID && pr.CreatedBlock.Timestamp.Equal(pp.Timestamp)){
-			success := ps.LocalChain.addBlock(pr.CreatedBlock)
+			success := ps.LocalChain.addBlock(pr.CreatedBlock)               // puts new Block into local Blockchain
 			if(success){
 				delete(ps.waiting, from.String())
 				ps.addNewGossiper(from.String(), pr.Origin)
-				fmt.Println("The puzzle response is correct.")
+				fmt.Println("The puzzle response is correct.",pr.Origin,from.String())
 				ps.LocalChain.print()
 				ps.broadcastBlock(pr.CreatedBlock, from)
 				ps.sendBlockChain(from)
@@ -90,7 +89,11 @@ func (ps *PuzzlesState) handlePuzzleResponse(pr *PuzzleResponse, from *net.UDPAd
 func (ps *PuzzlesState) broadcastBlock(b *Block, from *net.UDPAddr){
 	bb := &BlockBroadcast{ps.MyName, b}
 	msg := &GossipPacket{BBroadcast : bb}
+	for _,peer := range ps.peers{
+		fmt.Println("Peers: ",peer.address)                        // ERRRPR here
+	}
 	for _,peer := range(ps.peers){
+		fmt.Println("Broadcast...",from.String()," ",peer.address)
 		if(peer.address.String()!=from.String()){
 			fmt.Println("Send block to "+peer.address.String())
 			ps.send(msg, peer.address)
@@ -116,7 +119,7 @@ func (ps *PuzzlesState) handleBlockChain(bcm *BlockChainMessage, from *net.UDPAd
 func (ps *PuzzlesState) handleBlockBroadcast(bb *BlockBroadcast, from *net.UDPAddr){
 	added := ps.LocalChain.addBlock(bb.NewBlock)
 	if(added){
-		fmt.Println("Received new block and updated block chain.")
+		fmt.Println("Received new block and updated block chain.",from.String())
 		ps.LocalChain.print()
 		ps.broadcastBlock(bb.NewBlock, from)
 	}

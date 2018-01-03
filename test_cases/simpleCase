@@ -4,3 +4,5 @@ node A: ./gossiper -UIPort=10000 -gossipPort=127.0.0.1:5000 -name=nodeA -peers=1
 node B: ./gossiper -UIPort=10001 -gossipPort=127.0.0.1:5001 -name=nodeB -peers=127.0.0.1:5002 -rtimer=10
 node C: ./gossiper -UIPort=10002 -gossipPort=127.0.0.1:5002 -name=nodeC -peers=127.0.0.1:5003 -rtimer=10
 node D: ./gossiper -UIPort=10003 -gossipPort=127.0.0.1:5003 -name=nodeD -peers=127.0.0.1:5002 -rtimer=10
+node E: ./gossiper -UIPort=10004 -gossipPort=127.0.0.1:5004 -name=nodeE -peers=127.0.0.1:5003 -rtimer=10
+node F: ./gossiper -UIPort=10005 -gossipPort=127.0.0.1:5005 -name=nodeF -peers=127.0.0.1:5002 -rtimer=10

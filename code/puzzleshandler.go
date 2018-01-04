@@ -109,10 +109,16 @@ func (ps *PuzzlesState) sendBlockChain(dest *net.UDPAddr){
 
 func (ps *PuzzlesState) handleBlockChain(bcm *BlockChainMessage, from *net.UDPAddr){
 	if(!ps.Joined){
-		ps.LocalChain = bcm.Chain
-		ps.Joined = true
-		fmt.Println("Updated block chain.")
-		ps.LocalChain.print()
+		ok := bcm.Chain.checkIntegrity()
+		if(ok){
+			ps.LocalChain = bcm.Chain
+			ps.Joined = true
+			fmt.Println("Updated block chain.")
+			ps.LocalChain.print()
+		}else{
+			panic("Block chain integrity is not correct. You should retry or connect to another peer")
+		}
+		
 	}
 }
 

@@ -133,7 +133,6 @@ func (bc *BlockChain) containsValidNodeID(id uint64) bool{
 	}
 	b,ok := bc.BlocksPerNodeID[id]
 	if(ok){
-
 		return b.isValid()
 	}
 	return false
@@ -210,6 +209,23 @@ func (bc *BlockChain) nonExpiredBlockChain() *BlockChain{
 	}
 
 	return &BlockChain{validBlocks, validNodesIDs, bc.LastBlock}
+}
+
+func (bc *BlockChain) checkIntegrity() bool{
+	var prevHash []byte
+	for _,id := range(bc.OrderedNodesIDs){
+		b := bc.BlocksPerNodeID[id]
+		if(!b.isValid()){
+			return false
+		}
+		if(prevHash!=nil){
+			if(bytes.Compare(b.PreviousHash, prevHash)!=0){
+				return false
+			}
+			prevHash = b.hash()
+		}
+	}
+	return true
 }
 
 func mineBlock(id uint64, timestamp time.Time, pub *rsa.PublicKey, previousHash []byte) *Block{

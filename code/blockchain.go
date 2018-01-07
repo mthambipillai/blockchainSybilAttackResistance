@@ -14,7 +14,7 @@ import(
 )
 
 const difficulty = 16
-const expiration = time.Second*6000
+const expiration = time.Second*10
 
 type BlockChain struct{
 	BlocksPerNodeID map[uint64]*Block
@@ -109,11 +109,21 @@ func (bc *BlockChain) addBlock(b *Block) bool{
 		fmt.Println("Adds block for id",b.NodeID)
 		bc.BlocksPerNodeID[b.NodeID] = b
 		bc.LastBlock = b
-		bc.OrderedNodesIDs = append(bc.OrderedNodesIDs, b.NodeID)
+		bc.OrderedNodesIDs = bc.addNodeIDToList(b.NodeID)
 		return true
 	}else{
 		return false
 	}
+}
+
+func (bc *BlockChain) addNodeIDToList(id uint64) []uint64{
+	res := make([]uint64,0)
+	for _,n := range(bc.OrderedNodesIDs){
+		if(n!=id){
+			res = append(res, n)
+		}
+	}
+	return append(res, id)
 }
 
 func (bc *BlockChain) containsValidNodeID(id uint64) bool{
@@ -122,7 +132,6 @@ func (bc *BlockChain) containsValidNodeID(id uint64) bool{
 	}
 	b,ok := bc.BlocksPerNodeID[id]
 	if(ok){
-
 		return b.isValid()
 	}
 	return false
@@ -176,6 +185,46 @@ func (bc *BlockChain) print(){
 	}
 	s := strings.Join(nodesIDs, " <-- ")
 	fmt.Println(s)
+}
+
+func (bc *BlockChain) nonExpiredBlockChain() *BlockChain{
+	expired := true
+	i:=0
+	for expired{
+		if(!bc.BlocksPerNodeID[bc.OrderedNodesIDs[i]].expired()){
+			fmt.Println(i)
+			fmt.Println("not expired")
+			expired = false
+		}else{
+			fmt.Println(i)
+			fmt.Println("expired")
+		}
+		i=i+1
+	}
+	validNodesIDs := bc.OrderedNodesIDs[(i-1):]
+	validBlocks := make(map[uint64]*Block)
+	for _,nodeID := range(validNodesIDs){
+		validBlocks[nodeID] = bc.BlocksPerNodeID[nodeID]
+	}
+
+	return &BlockChain{validBlocks, validNodesIDs, bc.LastBlock}
+}
+
+func (bc *BlockChain) checkIntegrity() bool{
+	var prevHash []byte
+	for _,id := range(bc.OrderedNodesIDs){
+		b := bc.BlocksPerNodeID[id]
+		if(!b.isValid()){
+			return false
+		}
+		if(prevHash!=nil){
+			if(bytes.Compare(b.PreviousHash, prevHash)!=0){
+				return false
+			}
+			prevHash = b.hash()
+		}
+	}
+	return true
 }
 
 func mineBlock(id uint64, timestamp time.Time, pub *rsa.PublicKey, previousHash []byte) *Block{

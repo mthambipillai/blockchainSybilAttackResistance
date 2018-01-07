@@ -272,6 +272,8 @@ func main() {
 	go srh.updateMapWithMatches()
 	srh.searchForInactiveNodes()
 
+	ps.expireJoining()
+
 	var peersStatus []PeerStatus
 	vectorClock := &StatusPacket{Want : peersStatus}
 	msgsSeen := make(map[RumorMessageKey]StoredRumor)

@@ -110,10 +110,16 @@ func (ps *PuzzlesState) sendBlockChain(dest *net.UDPAddr){
 
 func (ps *PuzzlesState) handleBlockChain(bcm *BlockChainMessage, from *net.UDPAddr){
 	if(!ps.Joined){
-		ps.LocalChain = bcm.Chain
-		ps.Joined = true
-		fmt.Println("Updated block chain.")
-		ps.LocalChain.print()
+		ok := bcm.Chain.checkIntegrity()
+		if(ok){
+			ps.LocalChain = bcm.Chain
+			ps.Joined = true
+			fmt.Println("Updated block chain.")
+			ps.LocalChain.print()
+		}else{
+			panic("Block chain integrity is not correct. You should retry or connect to another peer")
+		}
+		
 	}
 }
 
@@ -152,4 +158,16 @@ func (ps *PuzzlesState) send(msg *GossipPacket, dest_addr *net.UDPAddr){
     if err2 != nil {
         fmt.Println(err2, " dest : ", dest_addr.String())
     }
+}
+
+func (ps *PuzzlesState) expireJoining(){
+	ticker := time.NewTicker(expiration).C
+	go func(){
+		for{
+			select{
+			case <- ticker:
+				ps.Joined = false
+			}
+		}
+	}()
 }

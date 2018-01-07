@@ -6,20 +6,30 @@ import(
 
 type SybilResistanceHandler struct{
 	ps *PuzzlesState
-	cn *checkNeighbors
+	cn *CheckNeighbors
 }
 
 //returns whether the gossip packet is allowed or not according to the sybil resistance protocol
 func (srh *SybilResistanceHandler) handleGossipPacket(gp *GossipPacket, from *net.UDPAddr)bool{
 	if gp.NodeID!=srh.ps.MyID && srh.ps.LocalChain.containsValidNodeID(gp.NodeID){
-		//TODO : handle this with the part 2 structure
-		val, ok := srh.cn.activeNeighbors[from.String()]
-		if val{                // if is active
 
+		if gp.DigitalSign != nil{
 
 		}
-		if !ok{
 
+		val, ok := srh.cn.activeNeighbors[from.String()]
+		if ok{
+			if val{                // if is active
+
+				//TODO HERE
+				return true
+
+			}else{
+				return false
+			}
+		}else{
+
+			return false
 		}
 
 		//fmt.Println("HEREEE",from,gp.NodeID)

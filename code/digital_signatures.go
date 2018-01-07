@@ -10,12 +10,12 @@ import (
 )
 
 type SignedDocument struct{
-	hashedData		[]byte
-	encryptedData 	[]byte
+	HashedData		[]byte
+	EncryptedData 	[]byte
 }
 
 // create hash value for inactive packets
-func (srh *SybilResistanceHandler)createHashInactive(nodeID uint64) []byte{
+func (srh *SybilResistanceHandler)createHash(nodeID uint64) []byte{
 	bs := []byte(strconv.Itoa(int(nodeID)))
 	hasher := sha256.New()
 	hasher.Write(bs)
@@ -36,7 +36,7 @@ func (srh *SybilResistanceHandler)signDocument(data []byte) *SignedDocument {
 //validate if the SignedDocument is coming from a trusted peer
 func (srh *SybilResistanceHandler)validatePeer(signedData *SignedDocument) bool{
 	if signedData != nil{
-		err:= rsa.VerifyPKCS1v15(srh.ps.PubKey,crypto.SHA256,signedData.hashedData,signedData.encryptedData)
+		err:= rsa.VerifyPKCS1v15(srh.ps.PubKey,crypto.SHA256,signedData.HashedData,signedData.EncryptedData)
 		if err == nil{
 			fmt.Println("Trusted node.")
 			return true

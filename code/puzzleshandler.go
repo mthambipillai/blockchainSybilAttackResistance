@@ -60,13 +60,13 @@ func (ps *PuzzlesState) handlePuzzleProposal(pp *PuzzleProposal, from *net.UDPAd
 		b := mineBlock(pp.NodeID, pp.Timestamp, ps.PubKey, pp.PreviousHash)
 		fmt.Println("Done mining. Send puzzle response.")
 		ps.MyID = pp.NodeID
-		ps.addNewGossiper(from.String(), pp.Origin) 						// TODO think of it again!
+		ps.addNewGossiper(from.String(), pp.Origin)
 		pr := &PuzzleResponse{ps.MyName, pp.Origin, b}
 		ps.send(&GossipPacket{PResponse: pr}, from)
 	}
 }
 
-func (ps *PuzzlesState) handlePuzzleResponse(pr *PuzzleResponse, from *net.UDPAddr){
+func (ps *PuzzlesState) handlePuzzleResponse(pr *PuzzleResponse, from *net.UDPAddr, channel chan* IPMatchNodeID){
 	fmt.Println("Received puzzle response.")
 	pp,ok := ps.waiting[from.String()]
 	if(ok && pr.Destination==ps.MyName){
@@ -75,7 +75,8 @@ func (ps *PuzzlesState) handlePuzzleResponse(pr *PuzzleResponse, from *net.UDPAd
 			if(success){
 				delete(ps.waiting, from.String())
 				ps.addNewGossiper(from.String(), pr.Origin)
-				fmt.Println("The puzzle response is correct.",pr.Origin,from.String())
+				fmt.Println("The puzzle response is correct.",pr.Origin,from.String(),pr.CreatedBlock.NodeID)
+				channel<- &IPMatchNodeID{from.String(), pr.CreatedBlock.NodeID}
 				ps.LocalChain.print()
 				ps.broadcastBlock(pr.CreatedBlock, from)
 				ps.sendBlockChain(from)

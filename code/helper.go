@@ -75,18 +75,20 @@ type StatusPacket struct {
 }
 
 type GossipPacket struct {
-	NodeID uint64
-    Rumor *RumorMessage
-    Status *StatusPacket
-    Message *PrivateMessage
-    DRequest *DataRequest
-    DReply *DataReply
-    SRequest *SearchRequest
-    SReply *SearchReply
-    PProposal *PuzzleProposal
-    PResponse *PuzzleResponse
-    BBroadcast *BlockBroadcast
-    BChain *BlockChainMessage
+	NodeID 		uint64
+    Rumor   	*RumorMessage
+    Status 		*StatusPacket
+    Message 	*PrivateMessage
+    DRequest 	*DataRequest
+    DReply 	 	*DataReply
+    SRequest 	*SearchRequest
+    SReply 		*SearchReply
+    PProposal 	*PuzzleProposal
+    PResponse 	*PuzzleResponse
+    BBroadcast 	*BlockBroadcast
+    BChain 		*BlockChainMessage
+	InNode		*InactiveNode
+    DigitalSign *SignedDocument
 }
 
 type Gossiper struct {
@@ -150,9 +152,8 @@ func (state *State) send(msg *GossipPacket,conn *net.UDPConn, dest_addr *net.UDP
 			printMongering2(dest_addr)
 		}
 	}
-
-    packetBytes, err1 := protobuf.Encode(msg)
-    if(err1!=nil){
+	packetBytes, err1 := protobuf.Encode(msg)
+	if(err1!=nil){
         fmt.Println(err1, " dest : ", dest_addr.String())
     }
     _,err2 := conn.WriteToUDP(packetBytes,dest_addr)

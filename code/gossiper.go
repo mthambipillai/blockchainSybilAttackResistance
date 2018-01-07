@@ -105,7 +105,7 @@ func receivesPuzzleProposalFromPeer(pp *PuzzleProposal, from *net.UDPAddr, state
 }
 
 func receivesPuzzleResponseFromPeer(pr *PuzzleResponse, from *net.UDPAddr, state *State){
-	state.srh.ps.handlePuzzleResponse(pr, from)
+	state.srh.ps.handlePuzzleResponse(pr, from, state.srh.cn.PResponseChan)
 }
 
 func receivesBlockBroadcastFromPeer(bb *BlockBroadcast, from *net.UDPAddr, state *State){
@@ -183,7 +183,7 @@ func receivesStatusFromPeer(status *StatusPacket, from *net.UDPAddr, state *Stat
 }
 
 func antiEntropy(state *State){
-	ticker := time.NewTicker(time.Second*1).C
+	ticker := time.NewTicker(time.Second*1).C    // antiEntropy set to 5 for blockchain tests
 	go func(){
 		for{
 			select{
@@ -250,7 +250,6 @@ func main() {
 	me.conn = myGossipConn
 	defer myGossipConn.Close()
 	gossipers := parseOtherPeers(*peers)
-
 	bc := &BlockChain{}
 	myID := uint64(0)//Block chain starts at id 1, 0 is conventional for 'not joined id'
 	privKey,errRSA := rsa.GenerateKey(crand.Reader,2048)
@@ -260,12 +259,18 @@ func main() {
 	pubKey := privKey.PublicKey
 	joined := false
 	if(*genesis){
-		myID = uint64(1)
+		myID = uint64(1)                         // id for blockchain
 		bc.initGenesis(myID, &pubKey)
 		joined = true
 	}
+
+	channelPuzzleResponse  := make(chan *IPMatchNodeID)     // channel used to connect Ip address with nodeID of neighbor node
+
 	ps := &PuzzlesState{myID, *name, privKey, &pubKey, joined, bc, myGossipConn, make(map[string]*PuzzleProposal, 0), gossipers}
-	srh := &SybilResistanceHandler{ps}
+
+	srh := &SybilResistanceHandler{ps,createCheckNeighborsProtocol(channelPuzzleResponse)}
+	go srh.updateMapWithMatches()
+	srh.searchForInactiveNodes()
 
 	var peersStatus []PeerStatus
 	vectorClock := &StatusPacket{Want : peersStatus}
@@ -284,7 +289,7 @@ func main() {
 	go webServer(state, ip+":"+strconv.Itoa(*uiPort-1000))
 	go routingMessages(state, *rtimer)
 	if(!state.noForward){
-		antiEntropy(state)
+	antiEntropy(state)
 	}
     go listenPeers(state)
     go removeSearches(state)
@@ -309,6 +314,7 @@ func listenPeers(state *State){
         	isPResponse := packet.PResponse!=nil
         	isBBroadcast := packet.BBroadcast!=nil
     		isBlockChainMessage := packet.BChain!=nil
+			isInactive := packet.InNode!= nil
 
         	if(!state.alreadyKnowPeer(addr)){
         		state.addPeer(addr)
@@ -330,9 +336,12 @@ func listenPeers(state *State){
 		    			receivesSearchRequestFromPeer(packet.SRequest, addr, state)
 		    		}else if(isSReply){
 		    			receivesSearchReplyFromPeer(packet.SReply, addr, state)
-		    		}else{
-		        		fmt.Println("Need to have only one non-nil field.")
-		        	}
+		    		}else if isInactive{
+						state.srh.handleInactivePacket(*packet.InNode)
+		        		//fmt.Println("Need to have only one non-nil field.")
+		        	}else{
+		        		fmt.Println("Packet",packet.DigitalSign)
+					}
 	        	}
         	}else{
         		if(isPProposal){
@@ -346,7 +355,7 @@ func listenPeers(state *State){
     			}
         	}
         }else{
-        	fmt.Println(err)
+        	fmt.Println("EDW",err)
         }
     }
 }

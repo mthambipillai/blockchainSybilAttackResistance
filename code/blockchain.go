@@ -23,7 +23,7 @@ type BlockChain struct{
 }
 
 type Block struct{
-	NodeID 			uint64
+	NodeID 			uint64           // for sybil attack resistance protocol
 	Timestamp 		time.Time
 	PubKey			BCPublicKey
 	Nonce			[]byte
@@ -66,8 +66,6 @@ func (b *Block) getBytes()[]byte{
     return append(nodeTimePubKeyNonce, b.PreviousHash...)
 }
 
-
-
 func (b *Block) hash() []byte{
     hasher := sha256.New()
 	hasher.Write(b.getBytes())
@@ -108,6 +106,7 @@ func (bc *BlockChain) addBlock(b *Block) bool{
 		matchesLast = bytes.Compare(b.PreviousHash, bc.LastBlock.hash())==0
 	}
 	if(b.isValid() && matchesLast){
+		fmt.Println("Adds block for id",b.NodeID)
 		bc.BlocksPerNodeID[b.NodeID] = b
 		bc.LastBlock = b
 		bc.OrderedNodesIDs = append(bc.OrderedNodesIDs, b.NodeID)
@@ -142,7 +141,7 @@ func (bc *BlockChain) containsBlock(b *Block) bool{
 }
 
 func (bc *BlockChain) initGenesis(id uint64, pub *rsa.PublicKey){
-	fmt.Println("Start the blockchain.")
+	fmt.Println("Start the blockchain for id.",id)
 	bc.BlocksPerNodeID = make(map[uint64]*Block)
 	var b *Block = nil
 	prevHash := []byte("random string because prevHash cannot be nil")
@@ -200,4 +199,11 @@ func mineBlock(id uint64, timestamp time.Time, pub *rsa.PublicKey, previousHash 
 		}
 	}
 	return nil
+}
+
+func (bc *BlockChain) printChain(){
+	for k,v := range bc.BlocksPerNodeID{
+		fmt.Println("Known Blocks: ",k," ",v)
+	}
+
 }

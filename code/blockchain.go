@@ -14,7 +14,7 @@ import(
 )
 
 const difficulty = 16
-const expiration = time.Second*20
+const expiration = time.Second*30
 
 type BlockChain struct{
 	BlocksPerNodeID map[uint64]*Block

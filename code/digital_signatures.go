@@ -2,7 +2,6 @@ package main
 
 import (
 	"crypto/sha256"
-	"strconv"
 	"crypto/rsa"
 	"crypto/rand"
 	"crypto"
@@ -15,8 +14,8 @@ type SignedDocument struct{
 }
 
 // create hash value for inactive packets
-func (srh *SybilResistanceHandler)createHash(nodeID uint64) []byte{
-	bs := []byte(strconv.Itoa(int(nodeID)))
+func (srh *SybilResistanceHandler)createHash(nodeID string) []byte{
+	bs := []byte(nodeID)
 	hasher := sha256.New()
 	hasher.Write(bs)
 	return hasher.Sum(nil)
@@ -34,9 +33,10 @@ func (srh *SybilResistanceHandler)signDocument(data []byte) *SignedDocument {
 }
 
 //validate if the SignedDocument is coming from a trusted peer
-func (srh *SybilResistanceHandler)validatePeer(signedData *SignedDocument) bool{
+func (srh *SybilResistanceHandler)validatePeer(signedData *SignedDocument, NodeID uint64) bool{
 	if signedData != nil{
-		err:= rsa.VerifyPKCS1v15(srh.ps.PubKey,crypto.SHA256,signedData.HashedData,signedData.EncryptedData)
+		fmt.Println("VALIDATEEE",NodeID)
+		err:= rsa.VerifyPKCS1v15(srh.findPublicKeyForCorrespondingNode(NodeID),crypto.SHA256,signedData.HashedData,signedData.EncryptedData)
 		if err == nil{
 			fmt.Println("Trusted node.")
 			return true
@@ -48,4 +48,10 @@ func (srh *SybilResistanceHandler)validatePeer(signedData *SignedDocument) bool{
 		fmt.Println("Error when decrypting the data received!")
 		return false
 	}
+}
+
+func (srh *SybilResistanceHandler) findPublicKeyForCorrespondingNode(NodeID uint64) *rsa.PublicKey{
+	var PublicKey rsa.PublicKey
+	PublicKey =  bcPubKeyTorsaPubKey(srh.ps.LocalChain.BlocksPerNodeID[NodeID].PubKey)
+	return &PublicKey
 }

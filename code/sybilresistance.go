@@ -2,6 +2,7 @@ package main
 
 import(
 	"net"
+	"fmt"
 )
 
 type SybilResistanceHandler struct{
@@ -12,16 +13,14 @@ type SybilResistanceHandler struct{
 //returns whether the gossip packet is allowed or not according to the sybil resistance protocol
 func (srh *SybilResistanceHandler) handleGossipPacket(gp *GossipPacket, from *net.UDPAddr)bool{
 	if gp.NodeID!=srh.ps.MyID && srh.ps.LocalChain.containsValidNodeID(gp.NodeID){
-
-		if gp.DigitalSign != nil{
-
-		}
-
 		val, ok := srh.cn.activeNeighbors[from.String()]
 		if ok{
 			if val{                // if is active
-
-				//TODO HERE
+				srh.cn.MsgRecv[from.String()] <- gp.NodeID
+				fmt.Println("Received from active",from,gp.NodeID)
+				if gp.InNode != nil && gp.DigitalSign != nil{
+					srh.validatePeer(gp.DigitalSign,gp.NodeID)
+				}
 				return true
 
 			}else{

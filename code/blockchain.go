@@ -14,7 +14,7 @@ import(
 )
 
 const difficulty = 16
-const expiration = time.Second*10
+const expiration = time.Second*20
 
 type BlockChain struct{
 	BlocksPerNodeID map[uint64]*Block
@@ -215,6 +215,7 @@ func (bc *BlockChain) checkIntegrity() bool{
 	for _,id := range(bc.OrderedNodesIDs){
 		b := bc.BlocksPerNodeID[id]
 		if(!b.isValid()){
+			fmt.Println("Block is not valid")
 			return false
 		}
 		if(prevHash!=nil){

@@ -265,13 +265,11 @@ func main() {
 	}
 
 	channelPuzzleResponse  := make(chan *IPMatchNodeID)     // channel used to connect Ip address with nodeID of neighbor node
+	channelMessageRecv     := make(map[string] chan uint64)		// map of channels to coordinate inspection of inactive nodes
 
 	ps := &PuzzlesState{myID, *name, privKey, &pubKey, joined, bc, myGossipConn, make(map[string]*PuzzleProposal, 0), gossipers}
 
-	srh := &SybilResistanceHandler{ps,createCheckNeighborsProtocol(channelPuzzleResponse)}
-	go srh.updateMapWithMatches()
-	srh.searchForInactiveNodes()
-
+	srh := &SybilResistanceHandler{ps,createCheckNeighborsProtocol(channelPuzzleResponse, channelMessageRecv)}
 	ps.expireJoining()
 
 	var peersStatus []PeerStatus
@@ -287,6 +285,11 @@ func main() {
 	state := &State{me, gossipers, vectorClock, msgsSeen, pendingAcks, 1, lastSeqnSeen,
 		nexthops, privateMsgs, *noforward, files, downloads, nil, false, make(chan string),
 		nil,make([]*SearchRequest,0),0,srh}
+
+	state.srh.initMap(strings.Split(*peers,"_")[0])
+	go state.srh.updateMapWithMatches()
+	srh.searchForInactiveNodes()
+//	go srh.identifyInactiveNodes()
 
 	go webServer(state, ip+":"+strconv.Itoa(*uiPort-1000))
 	go routingMessages(state, *rtimer)

@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016/Debian) (preloaded format=pdflatex 2017.10.4)  7 JAN 2018 22:17
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016/Debian) (preloaded format=xelatex 2017.9.6)  9 JAN 2018 11:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **report.tex
 (./report.tex
-LaTeX2e <2016/03/31> patch level 3
-Babel <3.9r> and hyphenation patterns for 3 language(s) loaded.
+LaTeX2e <2017/01/01> patch level 3
+Babel <3.9r> and hyphenation patterns for 7 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/base/size10.clo
@@ -24,7 +24,7 @@ File: size10.clo 2014/09/29 v1.4h Standard LaTeX file (size option)
 \bibindent=\dimen102
 )
 (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
-Package: amsmath 2016/06/28 v2.15d AMS math features
+Package: amsmath 2016/11/05 v2.16a AMS math features
 \@mathmargin=\skip43
 
 For additional information on amsmath, use the `?' option.
@@ -44,20 +44,20 @@ Package: amsbsy 1999/11/29 v1.2d Bold Symbols
 Package: amsopn 2016/03/08 v2.02 operator names
 )
 \inf@bad=\count87
-LaTeX Info: Redefining \frac on input line 199.
+LaTeX Info: Redefining \frac on input line 213.
 \uproot@=\count88
 \leftroot@=\count89
-LaTeX Info: Redefining \overline on input line 297.
+LaTeX Info: Redefining \overline on input line 375.
 \classnum@=\count90
 \DOTSCASE@=\count91
-LaTeX Info: Redefining \ldots on input line 394.
-LaTeX Info: Redefining \dots on input line 397.
-LaTeX Info: Redefining \cdots on input line 518.
+LaTeX Info: Redefining \ldots on input line 472.
+LaTeX Info: Redefining \dots on input line 475.
+LaTeX Info: Redefining \cdots on input line 596.
 \Mathstrutbox@=\box26
 \strutbox@=\box27
 \big@size=\dimen105
-LaTeX Font Info:    Redeclaring font encoding OML on input line 634.
-LaTeX Font Info:    Redeclaring font encoding OMS on input line 635.
+LaTeX Font Info:    Redeclaring font encoding OML on input line 712.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 713.
 \macc@depth=\count92
 \c@MaxMatrixCols=\count93
 \dotsspace@=\muskip10
@@ -78,8 +78,8 @@ LaTeX Font Info:    Redeclaring font encoding OMS on input line 635.
 \multlinegap=\skip44
 \multlinetaggap=\skip45
 \mathdisplay@stack=\toks18
-LaTeX Info: Redefining \[ on input line 2739.
-LaTeX Info: Redefining \] on input line 2740.
+LaTeX Info: Redefining \[ on input line 2817.
+LaTeX Info: Redefining \] on input line 2818.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
 Package: graphicx 2014/10/28 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
@@ -89,7 +89,7 @@ Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
 \KV@toks@=\toks19
 )
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
-Package: graphics 2016/07/10 v1.0t Standard LaTeX Graphics (DPC,SPQR)
+Package: graphics 2016/10/09 v1.0u Standard LaTeX Graphics (DPC,SPQR)
 
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
 Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
@@ -97,44 +97,44 @@ Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
 )
-Package graphics Info: Driver file: pdftex.def on input line 99.
+Package graphics Info: Driver file: xetex.def on input line 99.
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def
-File: pdftex.def 2016/07/10 v0.06j Graphics/color for pdfTeX
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
-Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
-)
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
-)
-\Gread@gobject=\count99
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/xetex.def
+File: xetex.def 2016/07/11 v4.10 LaTeX color/graphics driver for XeTeX (L3/RRM/
+JK)
 ))
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
 )
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.sty
-Package: biblatex 2016/05/14 v3.4 programmable bibliographies (PK/JW/AB)
+Package: biblatex 2016/12/05 v3.7 programmable bibliographies (PK/JW/AB)
 
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2016/05/21 v0.22 Utility functions of pdfTeX for LuaTeX (HO
 )
 
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2016/05/16 v1.4 Providing info/warning/error messages (HO)
+)
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifluatex.sty
 Package: ifluatex 2016/05/16 v1.4 Provides the ifluatex switch (HO)
 Package ifluatex Info: LuaTeX not detected.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2016/05/16 v1.23 LaTeX kernel commands for general use (HO)
 )
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
 Package: ifpdf 2016/05/14 v3.1 Provides the ifpdf switch
 )
 Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: pdfTeX >= 1.30 not detected.
 Package pdftexcmds Info: \pdf@primitive is available.
 Package pdftexcmds Info: \pdf@ifprimitive is available.
-Package pdftexcmds Info: \pdfdraftmode found.
+Package pdftexcmds Info: \pdfdraftmode not found.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
-Package: etoolbox 2015/08/02 v2.2a e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count100
+Package: etoolbox 2017/01/02 v2.4 e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count99
 )
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2016/05/16 v3.12 Key value format for package options (HO)
@@ -151,7 +151,7 @@ Package etexcmds Info: Could not find \expanded.
 )))
 (/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.sty
 Package: logreq 2010/08/04 v1.0 xml request logger
-\lrq@indent=\count101
+\lrq@indent=\count100
 
 (/usr/share/texlive/texmf-dist/tex/latex/logreq/logreq.def
 File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
@@ -166,49 +166,49 @@ Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 (/usr/share/texlive/texmf-dist/tex/generic/xstring/xstring.sty
 (/usr/share/texlive/texmf-dist/tex/generic/xstring/xstring.tex
 \@xs@message=\write3
-\integerpart=\count102
-\decimalpart=\count103
+\integerpart=\count101
+\decimalpart=\count102
 )
 Package: xstring 2013/10/13  v1.7c  String manipulations (C Tellechea)
 )
-\c@tabx@nest=\count104
-\c@listtotal=\count105
-\c@listcount=\count106
-\c@liststart=\count107
-\c@liststop=\count108
-\c@citecount=\count109
-\c@citetotal=\count110
-\c@multicitecount=\count111
-\c@multicitetotal=\count112
-\c@instcount=\count113
-\c@maxnames=\count114
-\c@minnames=\count115
-\c@maxitems=\count116
-\c@minitems=\count117
-\c@citecounter=\count118
-\c@savedcitecounter=\count119
-\c@uniquelist=\count120
-\c@uniquename=\count121
-\c@refsection=\count122
-\c@refsegment=\count123
-\c@maxextratitle=\count124
-\c@maxextratitleyear=\count125
-\c@maxextrayear=\count126
-\c@maxextraalpha=\count127
-\c@abbrvpenalty=\count128
-\c@highnamepenalty=\count129
-\c@lownamepenalty=\count130
-\c@maxparens=\count131
-\c@parenlevel=\count132
-\blx@tempcnta=\count133
-\blx@tempcntb=\count134
-\blx@tempcntc=\count135
-\blx@maxsection=\count136
-\blx@maxsegment@0=\count137
-\blx@notetype=\count138
-\blx@parenlevel@text=\count139
-\blx@parenlevel@foot=\count140
-\blx@sectionciteorder@0=\count141
+\c@tabx@nest=\count103
+\c@listtotal=\count104
+\c@listcount=\count105
+\c@liststart=\count106
+\c@liststop=\count107
+\c@citecount=\count108
+\c@citetotal=\count109
+\c@multicitecount=\count110
+\c@multicitetotal=\count111
+\c@instcount=\count112
+\c@maxnames=\count113
+\c@minnames=\count114
+\c@maxitems=\count115
+\c@minitems=\count116
+\c@citecounter=\count117
+\c@savedcitecounter=\count118
+\c@uniquelist=\count119
+\c@uniquename=\count120
+\c@refsection=\count121
+\c@refsegment=\count122
+\c@maxextratitle=\count123
+\c@maxextratitleyear=\count124
+\c@maxextrayear=\count125
+\c@maxextraalpha=\count126
+\c@abbrvpenalty=\count127
+\c@highnamepenalty=\count128
+\c@lownamepenalty=\count129
+\c@maxparens=\count130
+\c@parenlevel=\count131
+\blx@tempcnta=\count132
+\blx@tempcntb=\count133
+\blx@tempcntc=\count134
+\blx@maxsection=\count135
+\blx@maxsegment@0=\count136
+\blx@notetype=\count137
+\blx@parenlevel@text=\count138
+\blx@parenlevel@foot=\count139
+\blx@sectionciteorder@0=\count140
 \labelnumberwidth=\skip46
 \labelalphawidth=\skip47
 \biblabelsep=\skip48
@@ -219,81 +219,81 @@ Package: xstring 2013/10/13  v1.7c  String manipulations (C Tellechea)
 \bibhang=\skip53
 \blx@bcfin=\read1
 \blx@bcfout=\write4
-\c@mincomprange=\count142
-\c@maxcomprange=\count143
-\c@mincompwidth=\count144
+\c@mincomprange=\count141
+\c@maxcomprange=\count142
+\c@mincompwidth=\count143
 Package biblatex Info: Trying to load biblatex default data model...
 Package biblatex Info: ... file 'blx-dm.def' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-dm.def)
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
-\c@afterword=\count145
-\c@savedafterword=\count146
-\c@annotator=\count147
-\c@savedannotator=\count148
-\c@author=\count149
-\c@savedauthor=\count150
-\c@bookauthor=\count151
-\c@savedbookauthor=\count152
-\c@commentator=\count153
-\c@savedcommentator=\count154
-\c@editor=\count155
-\c@savededitor=\count156
-\c@editora=\count157
-\c@savededitora=\count158
-\c@editorb=\count159
-\c@savededitorb=\count160
-\c@editorc=\count161
-\c@savededitorc=\count162
-\c@foreword=\count163
-\c@savedforeword=\count164
-\c@holder=\count165
-\c@savedholder=\count166
-\c@introduction=\count167
-\c@savedintroduction=\count168
-\c@namea=\count169
-\c@savednamea=\count170
-\c@nameb=\count171
-\c@savednameb=\count172
-\c@namec=\count173
-\c@savednamec=\count174
-\c@translator=\count175
-\c@savedtranslator=\count176
-\c@shortauthor=\count177
-\c@savedshortauthor=\count178
-\c@shorteditor=\count179
-\c@savedshorteditor=\count180
-\c@labelname=\count181
-\c@savedlabelname=\count182
-\c@institution=\count183
-\c@savedinstitution=\count184
-\c@lista=\count185
-\c@savedlista=\count186
-\c@listb=\count187
-\c@savedlistb=\count188
-\c@listc=\count189
-\c@savedlistc=\count190
-\c@listd=\count191
-\c@savedlistd=\count192
-\c@liste=\count193
-\c@savedliste=\count194
-\c@listf=\count195
-\c@savedlistf=\count196
-\c@location=\count197
-\c@savedlocation=\count198
-\c@organization=\count199
-\c@savedorganization=\count266
-\c@origlocation=\count267
-\c@savedoriglocation=\count268
-\c@origpublisher=\count269
-\c@savedorigpublisher=\count270
-\c@publisher=\count271
-\c@savedpublisher=\count272
-\c@language=\count273
-\c@savedlanguage=\count274
-\c@pageref=\count275
-\c@savedpageref=\count276
+\c@afterword=\count144
+\c@savedafterword=\count145
+\c@annotator=\count146
+\c@savedannotator=\count147
+\c@author=\count148
+\c@savedauthor=\count149
+\c@bookauthor=\count150
+\c@savedbookauthor=\count151
+\c@commentator=\count152
+\c@savedcommentator=\count153
+\c@editor=\count154
+\c@savededitor=\count155
+\c@editora=\count156
+\c@savededitora=\count157
+\c@editorb=\count158
+\c@savededitorb=\count159
+\c@editorc=\count160
+\c@savededitorc=\count161
+\c@foreword=\count162
+\c@savedforeword=\count163
+\c@holder=\count164
+\c@savedholder=\count165
+\c@introduction=\count166
+\c@savedintroduction=\count167
+\c@namea=\count168
+\c@savednamea=\count169
+\c@nameb=\count170
+\c@savednameb=\count171
+\c@namec=\count172
+\c@savednamec=\count173
+\c@translator=\count174
+\c@savedtranslator=\count175
+\c@shortauthor=\count176
+\c@savedshortauthor=\count177
+\c@shorteditor=\count178
+\c@savedshorteditor=\count179
+\c@labelname=\count180
+\c@savedlabelname=\count181
+\c@institution=\count182
+\c@savedinstitution=\count183
+\c@lista=\count184
+\c@savedlista=\count185
+\c@listb=\count186
+\c@savedlistb=\count187
+\c@listc=\count188
+\c@savedlistc=\count189
+\c@listd=\count190
+\c@savedlistd=\count191
+\c@liste=\count192
+\c@savedliste=\count193
+\c@listf=\count194
+\c@savedlistf=\count195
+\c@location=\count196
+\c@savedlocation=\count197
+\c@organization=\count198
+\c@savedorganization=\count199
+\c@origlocation=\count266
+\c@savedoriglocation=\count267
+\c@origpublisher=\count268
+\c@savedorigpublisher=\count269
+\c@publisher=\count270
+\c@savedpublisher=\count271
+\c@language=\count272
+\c@savedlanguage=\count273
+\c@pageref=\count274
+\c@savedpageref=\count275
 \shorthandwidth=\skip54
 \shortjournalwidth=\skip55
 \shortserieswidth=\skip56
@@ -304,13 +304,13 @@ Package biblatex Info: Trying to load compatibility code...
 Package biblatex Info: ... file 'blx-compat.def' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-compat.def
-File: blx-compat.def 2016/05/14 v3.4 biblatex compatibility (PK/JW/AB)
+File: blx-compat.def 2016/12/05 v3.7 biblatex compatibility (PK/JW/AB)
 )
 Package biblatex Info: Trying to load BibTeX backend compatibility...
 Package biblatex Info: ... file 'blx-bibtex.def' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-bibtex.def
-File: blx-bibtex.def 2016/05/14 v3.4 biblatex compatibility (PK/JW/AB)
+File: blx-bibtex.def 2016/12/05 v3.7 biblatex compatibility (PK/JW/AB)
 
 
 Package biblatex Warning: Using fall-back BibTeX(8) backend:
@@ -320,33 +320,33 @@ Package biblatex Warning: Using fall-back BibTeX(8) backend:
 Package biblatex Info: Trying to load generic definitions...
 Package biblatex Info: ... file 'biblatex.def' found.
  (/usr/share/texlive/texmf-dist/tex/latex/biblatex/biblatex.def
-File: biblatex.def 2016/05/14 v3.4 biblatex compatibility (PK/JW/AB)
-\c@textcitecount=\count277
-\c@textcitetotal=\count278
-\c@textcitemaxnames=\count279
-\c@biburlnumpenalty=\count280
-\c@biburlucpenalty=\count281
-\c@biburllcpenalty=\count282
-\c@smartand=\count283
+File: biblatex.def 2016/12/05 v3.7 biblatex compatibility (PK/JW/AB)
+\c@textcitecount=\count276
+\c@textcitetotal=\count277
+\c@textcitemaxnames=\count278
+\c@biburlnumpenalty=\count279
+\c@biburlucpenalty=\count280
+\c@biburllcpenalty=\count281
+\c@smartand=\count282
 )
 Package biblatex Info: Trying to load bibliography style 'numeric'...
 Package biblatex Info: ... file 'numeric.bbx' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
-File: numeric.bbx 2016/05/14 v3.4 biblatex bibliography style (PK/JW/AB)
+File: numeric.bbx 2016/12/05 v3.7 biblatex bibliography style (PK/JW/AB)
 Package biblatex Info: Trying to load bibliography style 'standard'...
 Package biblatex Info: ... file 'standard.bbx' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
-File: standard.bbx 2016/05/14 v3.4 biblatex bibliography style (PK/JW/AB)
-\c@bbx:relatedcount=\count284
-\c@bbx:relatedtotal=\count285
+File: standard.bbx 2016/12/05 v3.7 biblatex bibliography style (PK/JW/AB)
+\c@bbx:relatedcount=\count283
+\c@bbx:relatedtotal=\count284
 ))
 Package biblatex Info: Trying to load citation style 'numeric'...
 Package biblatex Info: ... file 'numeric.cbx' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/cbx/numeric.cbx
-File: numeric.cbx 2016/05/14 v3.4 biblatex citation style (PK/JW/AB)
+File: numeric.cbx 2016/12/05 v3.7 biblatex citation style (PK/JW/AB)
 Package biblatex Info: Redefining '\cite'.
 Package biblatex Info: Redefining '\parencite'.
 Package biblatex Info: Redefining '\footcite'.
@@ -369,10 +369,10 @@ Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx
-File: english.lbx 2016/05/14 v3.4 biblatex localization (PK/JW/AB)
+File: english.lbx 2016/12/05 v3.7 biblatex localization (PK/JW/AB)
 )
-\@quotelevel=\count286
-\@quotereset=\count287
+\@quotelevel=\count285
+\@quotereset=\count286
 
 (./report.aux)
 \openout1 = `report.aux'.
@@ -385,71 +385,34 @@ LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 7.
 LaTeX Font Info:    ... okay on input line 7.
 LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 7.
 LaTeX Font Info:    ... okay on input line 7.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 7.
+LaTeX Font Info:    ... okay on input line 7.
 LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 7.
 LaTeX Font Info:    ... okay on input line 7.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 7.
 LaTeX Font Info:    ... okay on input line 7.
-
-(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
-[Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count288
-\scratchdimen=\dimen114
-\scratchbox=\box28
-\nofMPsegments=\count289
-\nofMParguments=\count290
-\everyMPshowfont=\toks20
-\MPscratchCnt=\count291
-\MPscratchDim=\dimen115
-\MPnumerator=\count292
-\makeMPintoPDFobject=\count293
-\everyMPtoPDFconversion=\toks21
-) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
-Package: epstopdf-base 2016/05/15 v2.6 Base part for package epstopdf
-
-(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
-Package: grfext 2016/05/16 v1.2 Manage graphics extensions (HO)
-
-(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
-Package: kvdefinekeys 2016/05/16 v1.4 Define keys (HO)
-))
-Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
-38.
-Package grfext Info: Graphics extension search list:
-(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
-G,.JBIG2,.JB2,.eps]
-(grfext)             \AppendGraphicsExtensions on input line 456.
-
-(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
-File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
-e
-))
-Package biblatex Info: No input encoding detected.
-(biblatex)             Assuming 'ascii'.
+Package biblatex Info: XeTeX detected.
+(biblatex)             Assuming input encoding 'utf8'.
 Package biblatex Info: Automatic encoding selection.
-(biblatex)             Assuming data encoding 'ascii'.
-Package biblatex Info: Input encoding 'ascii' specified.
-Package biblatex Info: Data encoding 'ascii' specified.
+(biblatex)             Assuming data encoding 'utf8'.
+Package biblatex Info: Input encoding 'utf8' specified.
+Package biblatex Info: Data encoding 'utf8' specified.
 (biblatex)             No need to reencode data.
 \openout4 = `report-blx.bib'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'report.bbl' found.
 
+
+Package biblatex Warning: File 'report.bbl' is wrong format version - expected 
+2.8.
+
+Package biblatex Info: ... file 'report.bbl' found.
 (./report.bbl)
 Package biblatex Info: Reference section=0 on input line 7.
 Package biblatex Info: Reference segment=0 on input line 7.
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
 
-Underfull \hbox (badness 1275) in paragraph at lines 19--29
-\OT1/cmr/m/n/10 ask for its so-lu-tion to the peer who wants to
+Underfull \hbox (badness 1281) in paragraph at lines 19--29
+\TU/lmr/m/n/10 ask for its solution to the peer who wants to
  []
 
 
@@ -458,8 +421,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 19--29
  []
 
 
-Underfull \hbox (badness 1748) in paragraph at lines 19--29
-\OT1/cmr/m/n/10 More con-cretely, each joined peer should store
+Underfull \hbox (badness 1755) in paragraph at lines 19--29
+\TU/lmr/m/n/10 More concretely, each joined peer should store
  []
 
 
@@ -468,18 +431,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 19--29
  []
 
 
-Underfull \hbox (badness 4341) in paragraph at lines 19--29
-\OT1/cmr/m/n/10 the next goal is to en-sure that com-mu-ni-ca-
+Underfull \hbox (badness 4366) in paragraph at lines 19--29
+\TU/lmr/m/n/10 the next goal is to ensure that communica-
  []
 
 
-Underfull \hbox (badness 1221) in paragraph at lines 19--29
-\OT1/cmr/m/n/10 tion in-side the sys-tem is based on the pos-ses-
- []
-
-
-Underfull \hbox (badness 1122) in paragraph at lines 19--29
-\OT1/cmr/m/n/10 shouldnt be able to usurpate an-other users to-
+Underfull \hbox (badness 1226) in paragraph at lines 19--29
+\TU/lmr/m/n/10 tion inside the system is based on the posses-
  []
 
 
@@ -488,29 +446,23 @@ Underfull \hbox (badness 10000) in paragraph at lines 19--29
  []
 
 
-Underfull \hbox (badness 1087) in paragraph at lines 19--29
-\OT1/cmr/m/n/10 More con-cretely, each time a peer A wants to
- []
-
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-
-Underfull \hbox (badness 5787) in paragraph at lines 30--40
-\OT1/cmr/m/n/10 cour-age ad-ver-saries to per-form Sybil at-tacks.
+Underfull \hbox (badness 1092) in paragraph at lines 19--29
+\TU/lmr/m/n/10 More concretely, each time a peer A wants to
  []
 
 
-Underfull \hbox (badness 3088) in paragraph at lines 30--40
-\OT1/cmr/m/n/10 For ex-am-ple the Dash cryp-tocur-rency re-quires
+Underfull \hbox (badness 5802) in paragraph at lines 30--40
+\TU/lmr/m/n/10 courage adversaries to perform Sybil attacks.
  []
 
 
-Underfull \hbox (badness 1400) in paragraph at lines 30--40
-\OT1/cmr/m/n/10 An-other ap-proach is to use CAPTCHAs which
+Underfull \hbox (badness 3098) in paragraph at lines 30--40
+\TU/lmr/m/n/10 For example the Dash cryptocurrency requires
+ []
+
+
+Underfull \hbox (badness 1406) in paragraph at lines 30--40
+\TU/lmr/m/n/10 Another approach is to use CAPTCHAs which
  []
 
 
@@ -519,8 +471,8 @@ Underfull \hbox (badness 10000) in paragraph at lines 30--40
  []
 
 
-Underfull \hbox (badness 1178) in paragraph at lines 30--40
-\OT1/cmr/m/n/10 This pa-per[2] de-scribes a way to make a join-
+Underfull \hbox (badness 1189) in paragraph at lines 30--40
+\TU/lmr/m/n/10 This paper[2] describes a way to make a join-
  []
 
 
@@ -536,46 +488,12 @@ Underfull \hbox (badness 10000) in paragraph at lines 30--40
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}
+ [1
 
 
 ]
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ˜ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ˜ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ˜ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ˜ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ˜ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-
-Underfull \hbox (badness 1466) in paragraph at lines 41--49
-\OT1/cmr/m/n/10 the non-invertibility prop-erty of hash func-tions,
+Underfull \hbox (badness 1460) in paragraph at lines 41--49
+\TU/lmr/m/n/10 the non-invertibility property of hash functions,
  []
 
 
@@ -584,32 +502,20 @@ Underfull \hbox (badness 10000) in paragraph at lines 41--49
  []
 
 
-Underfull \hbox (badness 1546) in paragraph at lines 41--49
-\OT1/cmr/m/n/10 The sec-ond part of the project will make use
+Underfull \hbox (badness 1590) in paragraph at lines 41--49
+\TU/lmr/m/n/10 The second part of the project will make use
  []
 
-[2] <network.png, id=13, 573.14125pt x 545.03625pt>
-File: network.png Graphic file (type png)
- <use network.png>
-Package pdftex.def Info: network.png used on input line 59.
-(pdftex.def)             Requested size: 229.25243pt x 218.01064pt.
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-
+[2]
+File: network.png Graphic file (type QTm)
+ <use  "network.png" >
 Underfull \hbox (badness 10000) in paragraph at lines 52--68
 
  []
 
 
 Underfull \hbox (badness 1205) in paragraph at lines 52--68
-\OT1/cmr/m/n/10 it will de-pend on the last block and by tran-
+\TU/lmr/m/n/10 it will depend on the last block and by tran-
  []
 
 
@@ -618,13 +524,13 @@ Underfull \hbox (badness 10000) in paragraph at lines 52--68
  []
 
 
-Underfull \hbox (badness 2111) in paragraph at lines 52--68
-\OT1/cmr/m/n/10 But this de-sign is not suf-fi-cient: a ma-li-cious
+Underfull \hbox (badness 2119) in paragraph at lines 52--68
+\TU/lmr/m/n/10 But this design is not sufficient: a malicious
  []
 
 
-Underfull \hbox (badness 1052) in paragraph at lines 52--68
-\OT1/cmr/m/n/10 A leaves the net-work, a ma-li-cious peer M can
+Underfull \hbox (badness 1024) in paragraph at lines 52--68
+\TU/lmr/m/n/10 a man-in-the-middle attack, he can use Aâ€™s ID
  []
 
 
@@ -632,44 +538,94 @@ Underfull \hbox (badness 10000) in paragraph at lines 52--68
 
  []
 
-[3 <./network.png>]
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
- <block.png, id=19, 206.7725pt x 231.86626pt>
-File: block.png Graphic file (type png)
+[3]
+File: block.png Graphic file (type QTm)
+ <use  "block.png" > [4] [5]
 
-<use block.png>
-Package pdftex.def Info: block.png used on input line 81.
-(pdftex.def)             Requested size: 144.73975pt x 162.30525pt.
- [4 <./block.png>]
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no Â in font cmr10!
-Missing character: There is no   in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no Â in font cmr10!
-Missing character: There is no   in font cmr10!
-Missing character: There is no â in font cmr10!
-Missing character: There is no € in font cmr10!
-Missing character: There is no ™ in font cmr10!
-Missing character: There is no Â in font cmr10!
-Missing character: There is no   in font cmr10!
-Missing character: There is no Â in font cmr10!
-Missing character: There is no   in font cmr10!
- [5] [6
+! Package keyval Error: family_i undefined.
+
+See the keyval package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.175 \end
+          {document}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! Package keyval Error: given_i undefined.
+
+See the keyval package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.175 \end
+          {document}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! Package keyval Error: family_i undefined.
+
+See the keyval package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.175 \end
+          {document}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! Package keyval Error: suffix_i undefined.
+
+See the keyval package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.175 \end
+          {document}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! Package keyval Error: given_i undefined.
+
+See the keyval package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.175 \end
+          {document}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! Package keyval Error: family_i undefined.
+
+See the keyval package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.175 \end
+          {document}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! Package keyval Error: given_i undefined.
+
+See the keyval package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.175 \end
+          {document}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+[6] [7
 
 ] (./report.aux)
 Package logreq Info: Writing requests to 'report.run.xml'.
@@ -677,25 +633,12 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 8096 strings out of 494945
- 135785 string characters out of 6181032
- 379327 words of memory out of 5000000
- 11315 multiletter control sequences out of 15000+600000
- 9184 words of font info for 34 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
- 36i,7n,45p,1275b,984s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmtt10.pfb>
-Output written on report.pdf (6 pages, 156439 bytes).
-PDF statistics:
- 57 PDF objects out of 1000 (max. 8388607)
- 38 compressed objects within 1 object stream
- 0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 8103 strings out of 494970
+ 138910 string characters out of 6176979
+ 420268 words of memory out of 5000000
+ 11833 multiletter control sequences out of 15000+600000
+ 7568 words of font info for 36 fonts, out of 8000000 for 9000
+ 38 hyphenation exceptions out of 8191
+ 36i,7n,45p,1275b,4360s stack positions out of 5000i,500n,10000p,200000b,80000s
 
+Output written on report.pdf (7 pages).

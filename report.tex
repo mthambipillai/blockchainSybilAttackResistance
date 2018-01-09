@@ -98,21 +98,75 @@ Now we have a way of sharing a list of all active nodes in the network but we ne
 
 Now if the malicious peer M communicates through B, B will not only check the ID in the blockchain and the validity of the digital signature, it will also check that M is not already part of the list of active peers. If not B will allow M, add it to the list of active peers and propagate the change. Now if M wants to communicate through C, C  will not allow it since M is already part of the list of active peers.
 
-To summarize, whenever a node A sends a first packet m to node B, B must perform the following checks :
+To summarize, whenever a node A sends a first packet m to node B, B must perform the following checks :
 \begin{enumerate}
-	\item Is A’s ID  a valid part of the blockchain ? If not proceed with the protocol in 5.1, If yes proceed to check 2
-	\item Is the signature of m valid using A’s public key present in the block ? If not reject m, if yes proceed to check 3
-	\item Is A already part of the list of active peers ? If yes reject m, if not add A to the list and propagate the information that A has joined to the neighbors, then treat m normally.
+	\item Is A’s ID  a valid part of the blockchain ? If not proceed with the protocol in 5.1, If yes proceed to check 2
+	\item Is the signature of m valid using A’s public key present in the block ? If not reject m, if yes proceed to check 3
+	\item Is A already part of the list of active peers ? If yes reject m, if not add A to the list and propagate the information that A has joined to the neighbors, then treat m normally.
 \end{enumerate}
 
 
 For the next packets, B only needs to check the signature.
 
 \subsection{Implementation details}
-In this subsection we will give a breif overview of the Go code we implemented so that it's easier to browse through it. Basically every GossipPacket now has an additional field : NodeID. It is used solely for the purpose of this project. Now at every reception of a GossipPacket, every peer will first call a function $handleGossipPacket$ that will return a boolean to state whether the peer should accept or drop the packet. This function will check if the NodeID is valid in the local blockchain or not and proceed with the protocols described in 5.1 and 5.2. The file puzzleshandler.go contains all message structures, handling, etc for the protocol described in 5.1. The file blockchain.go implements the blockchain and provides functions for every useful operation related to the blockchain.
+In this subsection we will give a brief overview of the Go code we implemented so that it's easier to browse through it. Basically every GossipPacket now has an additional field : NodeID. It is used solely for the purpose of this project. Now at every reception of a GossipPacket, every peer will first call a function $handleGossipPacket$ that will return a boolean to state whether the peer should accept or drop the packet. This function will check if the NodeID is valid in the local blockchain or not and proceed with the protocols described in 5.1 and 5.2. The file puzzleshandler.go contains all message structures, handling, etc for the protocol described in 5.1. The file blockchain.go implements the blockchain and provides functions for every useful operation related to the blockchain. The file digital\_signatures.go is used to create and handle the security protocol using digital signatures. The file node\_communication.go contains the channels and the code that is used for the mechanism to define inactive nodes.
 
 \section{Evaluation}
-We will create different p2p topologies and measure the joining time for a normal peer as well as the joining time for a set of Sybil peers in order to compare them. The normal joining time should be reasonable and the Sybil joining time should be very expensive. We will try different values for our parameters (the expiration delay and the difficulty of each cryptopuzzle) and compare the results.
+We will create different p2p topologies and measure the joining time for a normal peer as well as the joining time for a set of Sybil peers in order to compare them. The normal joining time should be reasonable and the Sybil joining time should be very expensive. We will try different values for our parameters and compare the results.
+
+
+We measured the joining time after we created the genesis block for the different values of the difficulty:
+\begin{itemize}
+    \item Difficulty = 16
+    \begin{enumerate}
+        \item Node 1: 147.020307ms
+        \item Node 2: 164.127784ms	
+        \item Node 3: 186.102790ms	
+        \item Node 4: 214.628043ms
+        \item Node 5: 204.144341ms
+        \item Node 6: 194.548098ms
+    \end{enumerate}
+    \item Difficulty = 18
+        \begin{enumerate}
+        \item Node 1: 1.3468796s
+        \item Node 2: 768.457822ms	
+        \item Node 3: 1.053998185s	
+        \item Node 4: 1.581628689s
+        \item Node 5: 1.372276421s
+        \item Node 6: 1.472019263s
+    \end{enumerate}
+    \item Difficulty = 20
+        \begin{enumerate}
+            \item Node 1: 2.873795175s
+            \item Node 2: 3.093252135s	
+            \item Node 3: 2.901926432s
+            \item Node 4: 2.663215389s
+            \item Node 5: 2.775930321s
+            \item Node 6: 2.823405346s
+        \end{enumerate}
+    \item Difficulty = 22
+        \begin{enumerate}
+        \item Node 1: 6.366208633s
+        \item Node 2: 7.196392081s	
+        \item Node 3: 8.758302038s
+        \item Node 4: 12.692505636s
+        \item Node 5: 8.263607094s
+        \item Node 6: 5.443429162s
+        \end{enumerate}
+    \item Difficulty = 24 ( In this case we created a malicious node m1 that tried to put other malicious nodes m2,m3,m4,m5,m6,m7 into the blockchain and it took more than 10minutes to put all of them into the blockchain, something that proves the validity of our protocol)
+        \begin{enumerate}
+        \item Node 1: 45.8752036122s 
+        \item Node 2: 47.3963730081s
+        \item Node 3: 47.7365930922s
+        \item Node 4: 49.2134378421s
+        \item Node 5: 53.3200982513s
+        \item Node 6: 58.0169600473s
+        \end{enumerate}       
+       
+        
+\end{itemize}
+
+
 
 We also have to check that coordinating multiple malicious peers will not affect the validity of the protocol. For example if a malicious peer wants to join through another malicious peer.
 

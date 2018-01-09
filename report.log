@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016/Debian) (preloaded format=xelatex 2017.9.6)  9 JAN 2018 11:40
+This is XeTeX, Version 3.14159265-2.6-0.99996 (TeX Live 2016/Debian) (preloaded format=xelatex 2017.9.6)  9 JAN 2018 11:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -411,78 +411,43 @@ Package biblatex Info: ... file 'report.bbl' found.
 Package biblatex Info: Reference section=0 on input line 7.
 Package biblatex Info: Reference segment=0 on input line 7.
 
-Underfull \hbox (badness 1281) in paragraph at lines 19--29
+Underfull \hbox (badness 1281) in paragraph at lines 22--32
 \TU/lmr/m/n/10 ask for its solution to the peer who wants to
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 19--29
+Underfull \hbox (badness 10000) in paragraph at lines 22--32
 
  []
 
 
-Underfull \hbox (badness 1755) in paragraph at lines 19--29
+Underfull \hbox (badness 1755) in paragraph at lines 22--32
 \TU/lmr/m/n/10 More concretely, each joined peer should store
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 19--29
+Underfull \hbox (badness 10000) in paragraph at lines 22--32
 
  []
 
 
-Underfull \hbox (badness 4366) in paragraph at lines 19--29
+Underfull \hbox (badness 4366) in paragraph at lines 22--32
 \TU/lmr/m/n/10 the next goal is to ensure that communica-
  []
 
 
-Underfull \hbox (badness 1226) in paragraph at lines 19--29
+Underfull \hbox (badness 1226) in paragraph at lines 22--32
 \TU/lmr/m/n/10 tion inside the system is based on the posses-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 19--29
+Underfull \hbox (badness 10000) in paragraph at lines 22--32
 
  []
 
 
-Underfull \hbox (badness 1092) in paragraph at lines 19--29
+Underfull \hbox (badness 1092) in paragraph at lines 22--32
 \TU/lmr/m/n/10 More concretely, each time a peer A wants to
- []
-
-
-Underfull \hbox (badness 5802) in paragraph at lines 30--40
-\TU/lmr/m/n/10 courage adversaries to perform Sybil attacks.
- []
-
-
-Underfull \hbox (badness 3098) in paragraph at lines 30--40
-\TU/lmr/m/n/10 For example the Dash cryptocurrency requires
- []
-
-
-Underfull \hbox (badness 1406) in paragraph at lines 30--40
-\TU/lmr/m/n/10 Another approach is to use CAPTCHAs which
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 30--40
-
- []
-
-
-Underfull \hbox (badness 1189) in paragraph at lines 30--40
-\TU/lmr/m/n/10 This paper[2] describes a way to make a join-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 30--40
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 30--40
-
  []
 
 
@@ -492,49 +457,84 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 ]
-Underfull \hbox (badness 1460) in paragraph at lines 41--49
+Underfull \hbox (badness 5802) in paragraph at lines 33--43
+\TU/lmr/m/n/10 courage adversaries to perform Sybil attacks.
+ []
+
+
+Underfull \hbox (badness 3098) in paragraph at lines 33--43
+\TU/lmr/m/n/10 For example the Dash cryptocurrency requires
+ []
+
+
+Underfull \hbox (badness 1406) in paragraph at lines 33--43
+\TU/lmr/m/n/10 Another approach is to use CAPTCHAs which
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--43
+
+ []
+
+
+Underfull \hbox (badness 1189) in paragraph at lines 33--43
+\TU/lmr/m/n/10 This paper[2] describes a way to make a join-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--43
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 33--43
+
+ []
+
+
+Underfull \hbox (badness 1460) in paragraph at lines 44--52
 \TU/lmr/m/n/10 the non-invertibility property of hash functions,
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 41--49
+Underfull \hbox (badness 10000) in paragraph at lines 44--52
 
  []
 
 
-Underfull \hbox (badness 1590) in paragraph at lines 41--49
+Underfull \hbox (badness 1590) in paragraph at lines 44--52
 \TU/lmr/m/n/10 The second part of the project will make use
  []
 
 [2]
 File: network.png Graphic file (type QTm)
  <use  "network.png" >
-Underfull \hbox (badness 10000) in paragraph at lines 52--68
+Underfull \hbox (badness 10000) in paragraph at lines 55--71
 
  []
 
 
-Underfull \hbox (badness 1205) in paragraph at lines 52--68
+Underfull \hbox (badness 1205) in paragraph at lines 55--71
 \TU/lmr/m/n/10 it will depend on the last block and by tran-
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 52--68
+Underfull \hbox (badness 10000) in paragraph at lines 55--71
 
  []
 
 
-Underfull \hbox (badness 2119) in paragraph at lines 52--68
+Underfull \hbox (badness 2119) in paragraph at lines 55--71
 \TU/lmr/m/n/10 But this design is not sufficient: a malicious
  []
 
 
-Underfull \hbox (badness 1024) in paragraph at lines 52--68
+Underfull \hbox (badness 1024) in paragraph at lines 55--71
 \TU/lmr/m/n/10 a man-in-the-middle attack, he can use A’s ID
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 52--68
+Underfull \hbox (badness 10000) in paragraph at lines 55--71
 
  []
 
@@ -548,7 +548,7 @@ See the keyval package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.175 \end
+l.178 \end
           {document}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -560,11 +560,12 @@ See the keyval package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.175 \end
+l.178 \end
           {document}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
+[6]
 
 ! Package keyval Error: family_i undefined.
 
@@ -572,7 +573,7 @@ See the keyval package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.175 \end
+l.178 \end
           {document}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -584,7 +585,7 @@ See the keyval package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.175 \end
+l.178 \end
           {document}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -596,7 +597,7 @@ See the keyval package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.175 \end
+l.178 \end
           {document}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -608,7 +609,7 @@ See the keyval package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.175 \end
+l.178 \end
           {document}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
@@ -620,12 +621,12 @@ See the keyval package documentation for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.175 \end
+l.178 \end
           {document}
 Try typing  <return>  to proceed.
 If that doesn't work, type  X <return>  to quit.
 
-[6] [7
+[7
 
 ] (./report.aux)
 Package logreq Info: Writing requests to 'report.run.xml'.
@@ -635,7 +636,7 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 Here is how much of TeX's memory you used:
  8103 strings out of 494970
  138910 string characters out of 6176979
- 420268 words of memory out of 5000000
+ 415268 words of memory out of 5000000
  11833 multiletter control sequences out of 15000+600000
  7568 words of font info for 36 fonts, out of 8000000 for 9000
  38 hyphenation exceptions out of 8191

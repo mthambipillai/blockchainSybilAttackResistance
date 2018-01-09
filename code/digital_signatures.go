@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"crypto"
 	"fmt"
+	"strconv"
 )
 
 type SignedDocument struct{
@@ -16,6 +17,14 @@ type SignedDocument struct{
 // create hash value for inactive packets
 func (srh *SybilResistanceHandler)createHash(nodeID string) []byte{
 	bs := []byte(nodeID)
+	hasher := sha256.New()
+	hasher.Write(bs)
+	return hasher.Sum(nil)
+}
+
+// create hash value to sign packets
+func (srh *SybilResistanceHandler)createHashForInteger(nodeID uint64) []byte {
+	bs := []byte(strconv.Itoa(int(nodeID)))
 	hasher := sha256.New()
 	hasher.Write(bs)
 	return hasher.Sum(nil)

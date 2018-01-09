@@ -117,7 +117,6 @@ In this subsection we will give a brief overview of the Go code we implemented s
 \section{Evaluation}
 We will create different p2p topologies and measure the joining time for a normal peer as well as the joining time for a set of Sybil peers in order to compare them. The normal joining time should be reasonable and the Sybil joining time should be very expensive. We will try different values for our parameters and compare the results.
 
-
 We measured the joining time after we created the genesis block for the different values of the difficulty:
 \begin{itemize}
     \item Difficulty = 16
@@ -156,7 +155,13 @@ We measured the joining time after we created the genesis block for the differen
         \item Node 5: 8.263607094s
         \item Node 6: 5.443429162s
         \end{enumerate}
-    \item Difficulty = 24 ( In this case we created a malicious node m1 that tried to put other malicious nodes m2,m3,m4,m5,m6,m7 into the blockchain and it took more than 10minutes to put all of them into the blockchain, something that proves the validity of our protocol)
+    \item Difficulty = 24 ( In this case we created a malicious node m1 that tried to put other malicious nodes m2,m3,m4,m5,m6,m7 into the blockchain and it took more than 10minutes to put all of them into the blockchain, something that proves the validity of our protocol): Figure 3
+    \begin{figure}[h]
+	\caption{Topology with malicious nodes trying to join our system}
+	\centering
+	\includegraphics[scale=0.4]{topoMalicious}
+	\label{fig:topoMalicious}
+	\end{figure}
         \begin{enumerate}
         \item Node 1: 45.8752036122s 
         \item Node 2: 47.3963730081s
@@ -164,15 +169,8 @@ We measured the joining time after we created the genesis block for the differen
         \item Node 4: 49.2134378421s
         \item Node 5: 53.3200982513s
         \item Node 6: 58.0169600473s
-        \end{enumerate}       
-       
-        
+        \end{enumerate}
 \end{itemize}
 
-
-
-We also have to check that coordinating multiple malicious peers will not affect the validity of the protocol. For example if a malicious peer wants to join through another malicious peer.
-
-It is important to also make sure that bootstrapping of networks is done correctly (when no nodes are joined).
 \printbibliography
 \end{document}

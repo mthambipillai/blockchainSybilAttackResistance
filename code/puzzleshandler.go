@@ -56,6 +56,7 @@ func (ps *PuzzlesState) addNewGossiper(address, identifier string){
 
 func (ps *PuzzlesState) handlePuzzleProposal(pp *PuzzleProposal, from *net.UDPAddr){
 	if(!ps.Joined){
+		start := time.Now()
 		fmt.Println("Received puzzle proposal. Start mining.")
 		b := mineBlock(pp.NodeID, pp.Timestamp, ps.PubKey, pp.PreviousHash)
 		fmt.Println("Done mining. Send puzzle response.")
@@ -63,6 +64,9 @@ func (ps *PuzzlesState) handlePuzzleProposal(pp *PuzzleProposal, from *net.UDPAd
 		ps.addNewGossiper(from.String(), pp.Origin)
 		pr := &PuzzleResponse{ps.MyName, pp.Origin, b}
 		ps.send(&GossipPacket{PResponse: pr}, from)
+		t := time.Now()
+		elapsed := t.Sub(start)
+		fmt.Println("Time to join: ",elapsed)
 	}
 }
 
@@ -75,7 +79,7 @@ func (ps *PuzzlesState) handlePuzzleResponse(pr *PuzzleResponse, from *net.UDPAd
 			if(success){
 				delete(ps.waiting, from.String())
 				ps.addNewGossiper(from.String(), pr.Origin)
-				fmt.Println("The puzzle response is correct.",pr.Origin,from.String(),pr.CreatedBlock.NodeID)
+				fmt.Println("The puzzle response is correct.")
 				channel<- &IPMatchNodeID{from.String(), pr.CreatedBlock.NodeID}
 				ps.LocalChain.print()
 				ps.broadcastBlock(pr.CreatedBlock, from)
@@ -90,11 +94,7 @@ func (ps *PuzzlesState) handlePuzzleResponse(pr *PuzzleResponse, from *net.UDPAd
 func (ps *PuzzlesState) broadcastBlock(b *Block, from *net.UDPAddr){
 	bb := &BlockBroadcast{ps.MyName, b}
 	msg := &GossipPacket{BBroadcast : bb}
-	for _,peer := range ps.peers{
-		fmt.Println("Peers: ",peer.address)                        // ERRRPR here
-	}
 	for _,peer := range(ps.peers){
-		fmt.Println("Broadcast...",from.String()," ",peer.address)
 		if(peer.address.String()!=from.String()){
 			fmt.Println("Send block to "+peer.address.String())
 			ps.send(msg, peer.address)
@@ -126,7 +126,7 @@ func (ps *PuzzlesState) handleBlockChain(bcm *BlockChainMessage, from *net.UDPAd
 func (ps *PuzzlesState) handleBlockBroadcast(bb *BlockBroadcast, from *net.UDPAddr){
 	added := ps.LocalChain.addBlock(bb.NewBlock)
 	if(added){
-		fmt.Println("Received new block and updated block chain.",from.String())
+		fmt.Println("Received new block and updated block chain.")
 		ps.LocalChain.print()
 		ps.broadcastBlock(bb.NewBlock, from)
 	}

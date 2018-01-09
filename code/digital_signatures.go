@@ -35,7 +35,6 @@ func (srh *SybilResistanceHandler)signDocument(data []byte) *SignedDocument {
 //validate if the SignedDocument is coming from a trusted peer
 func (srh *SybilResistanceHandler)validatePeer(signedData *SignedDocument, NodeID uint64) bool{
 	if signedData != nil{
-		fmt.Println("VALIDATEEE",NodeID)
 		err:= rsa.VerifyPKCS1v15(srh.findPublicKeyForCorrespondingNode(NodeID),crypto.SHA256,signedData.HashedData,signedData.EncryptedData)
 		if err == nil{
 			fmt.Println("Trusted node.")

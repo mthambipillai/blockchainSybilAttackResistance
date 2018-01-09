@@ -146,7 +146,7 @@ func (srh *SybilResistanceHandler) identifyInactiveNodes(k string){
 		if srh.cn.activeNeighbors[k] {
 			srh.cn.mu1.Unlock()
 			select {
-				case <-time.After(10 * time.Second):
+				case <-time.After(30 * time.Second):
 					c = c + 1
 					if c == attempts {
 						fmt.Println("Node disappeared", k)
@@ -176,6 +176,3 @@ func (srh *SybilResistanceHandler) broadcastInactivePacket(msg *GossipPacket){
 		}
 	}
 }
-
-//TODO count times to present some evaluation metrics
-//TODO update sybil resistance protocol with checkneighbors struct

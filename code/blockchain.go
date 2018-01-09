@@ -13,8 +13,8 @@ import(
 	"math/big"
 )
 
-const difficulty = 16
-const expiration = time.Second*30
+const difficulty = 23
+const expiration = time.Second*360
 
 type BlockChain struct{
 	BlocksPerNodeID map[uint64]*Block

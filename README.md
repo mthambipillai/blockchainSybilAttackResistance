@@ -6,4 +6,4 @@ This project was done for the course "Decentralized Systems Engineering" at EPFL
 
 ## Documentation
 
-Readers interested in the project should first read our paper https://github.com/mthambipillai/blockchainSybilAttackResistance/blob/master/report.pdf . 
+Readers interested in the project should first read our paper : https://github.com/mthambipillai/blockchainSybilAttackResistance/blob/master/report.pdf . 
